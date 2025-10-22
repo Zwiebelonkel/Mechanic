@@ -8,23 +8,23 @@ import { CircleGauge, Search, Wrench, Disc } from 'lucide-react';
 const services = [
   {
     icon: Wrench,
-    title: 'General Repairs',
-    description: 'From engine diagnostics to brake repairs, we handle it all with precision and care.',
+    title: 'Allgemeine Reparaturen',
+    description: 'Von der Motordiagnose bis zur Bremsenreparatur erledigen wir alles mit Präzision und Sorgfalt.',
   },
   {
     icon: CircleGauge,
-    title: 'Scheduled Maintenance',
-    description: 'Keep your vehicle in peak condition with our comprehensive maintenance services.',
+    title: 'Geplante Wartung',
+    description: 'Halten Sie Ihr Fahrzeug mit unseren umfassenden Wartungsdiensten in Top-Zustand.',
   },
   {
     icon: Search,
-    title: 'Inspections & Diagnostics',
-    description: 'State-of-the-art equipment to diagnose issues and ensure your car is road-safe.',
+    title: 'Inspektionen & Diagnosen',
+    description: 'Modernste Ausrüstung zur Diagnose von Problemen und zur Gewährleistung der Verkehrssicherheit Ihres Autos.',
   },
   {
     icon: Disc,
-    title: 'Tire Services',
-    description: 'Tire fitting, balancing, and alignment to ensure a smooth and safe ride.',
+    title: 'Reifenservice',
+    description: 'Reifenmontage, Auswuchten und Achsvermessung für eine reibungslose und sichere Fahrt.',
   },
 ];
 
@@ -47,14 +47,14 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/60" />
         <div className="relative z-10 p-4 animate-in fade-in slide-in-from-bottom-12 duration-1000">
           <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tight">
-            Precision German Engineering Meets Expert Care
+            Präzise deutsche Ingenieurskunst trifft auf fachmännische Sorgfalt
           </h1>
           <p className="mt-4 max-w-3xl mx-auto text-lg md:text-xl text-primary-foreground/80">
-            Your trusted partner for high-quality vehicle maintenance and repair. We bring passion and precision to every job.
+            Ihr zuverlässiger Partner für hochwertige Fahrzeugwartung und -reparatur. Wir bringen Leidenschaft und Präzision in jede Arbeit ein.
           </p>
           <div className="mt-8">
             <Button size="lg" asChild>
-              <Link href="/appointments">Schedule Your Service</Link>
+              <Link href="/appointments">Buchen Sie Ihren Service</Link>
             </Button>
           </div>
         </div>
@@ -63,9 +63,9 @@ export default function Home() {
       <section id="services" className="py-16 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-headline font-bold">Our Services</h2>
+            <h2 className="text-3xl md:text-4xl font-headline font-bold">Unsere Dienstleistungen</h2>
             <p className="mt-2 text-lg text-muted-foreground">
-              Comprehensive solutions for your vehicle's needs.
+              Umfassende Lösungen für die Bedürfnisse Ihres Fahrzeugs.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">

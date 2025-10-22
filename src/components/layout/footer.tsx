@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="bg-card text-card-foreground border-t">
       <div className="container mx-auto px-6 py-8">
         <div className="flex flex-col items-center text-center">
-          <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
+          <h2 className="text-2xl font-bold mb-4">Kontaktieren Sie uns</h2>
           <div className="flex flex-col md:flex-row md:space-x-12 space-y-4 md:space-y-0 text-muted-foreground">
             <div className="flex items-center justify-center gap-2">
               <Phone className="h-5 w-5 text-primary" />
@@ -13,17 +13,17 @@ export default function Footer() {
             </div>
             <div className="flex items-center justify-center gap-2">
               <Mail className="h-5 w-5 text-primary" />
-              <span>kontakt@meisterwerkstatt.de</span>
+              <span>kontakt@werkstatt.de</span>
             </div>
             <div className="flex items-center justify-center gap-2">
               <MapPin className="h-5 w-5 text-primary" />
-              <span>Meisterstraße 1, 10117 Berlin, Germany</span>
+              <span>Meisterstraße 1, 10117 Berlin, Deutschland</span>
             </div>
           </div>
         </div>
         <hr className="my-6 border-muted" />
         <p className="text-center text-muted-foreground">
-          &copy; {new Date().getFullYear()} Deutsche Meisterwerkstatt. All rights reserved.
+          &copy; {new Date().getFullYear()} Anton's Werkstatt. Alle Rechte vorbehalten.
         </p>
       </div>
     </footer>

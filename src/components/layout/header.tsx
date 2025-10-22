@@ -9,15 +9,15 @@ export default function Header() {
         <Link href="/" className="mr-6 flex items-center space-x-2">
           <Car className="h-6 w-6" />
           <span className="font-bold sm:inline-block">
-            Deutsche Meisterwerkstatt
+            Anton's Werkstatt
           </span>
         </Link>
         <nav className="flex items-center gap-4 text-sm ml-auto">
           <Button variant="ghost" asChild>
-            <Link href="/">Home</Link>
+            <Link href="/">Startseite</Link>
           </Button>
           <Button asChild>
-            <Link href="/appointments">Book Appointment</Link>
+            <Link href="/appointments">Termin Buchen</Link>
           </Button>
         </nav>
       </div>

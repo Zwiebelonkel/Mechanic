@@ -23,12 +23,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
+import { de } from 'date-fns/locale';
 import { Calendar as CalendarIcon, Loader2 } from "lucide-react";
 import { useState } from "react";
 
 const timeSlots = [
-  "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
-  "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM"
+  "09:00", "10:00", "11:00", "12:00",
+  "13:00", "14:00", "15:00", "16:00", "17:00"
 ];
 
 export default function AppointmentForm() {
@@ -49,23 +50,27 @@ export default function AppointmentForm() {
     setIsSubmitting(true);
     try {
       const result = await scheduleAppointment(data);
+      const message = result.success 
+        ? `Termin bestätigt für ${format(data.date, "PPP", { locale: de })} um ${data.time} Uhr. Eine Bestätigung wurde an ${data.email} gesendet.`
+        : "Terminvereinbarung fehlgeschlagen. Bitte versuchen Sie es erneut.";
+
       if (result.success) {
         toast({
-          title: "Success!",
-          description: result.message,
+          title: "Erfolg!",
+          description: message,
         });
         form.reset();
       } else {
         toast({
-          title: "Error",
-          description: result.message,
+          title: "Fehler",
+          description: message,
           variant: "destructive",
         });
       }
     } catch (error) {
       toast({
-        title: "An unexpected error occurred.",
-        description: "Please try again later.",
+        title: "Ein unerwarteter Fehler ist aufgetreten.",
+        description: "Bitte versuchen Sie es später noch einmal.",
         variant: "destructive",
       });
     } finally {
@@ -82,9 +87,9 @@ export default function AppointmentForm() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel>Vollständiger Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} />
+                    <Input placeholder="Max Mustermann" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -95,9 +100,9 @@ export default function AppointmentForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email Address</FormLabel>
+                  <FormLabel>E-Mail-Adresse</FormLabel>
                   <FormControl>
-                    <Input placeholder="john.doe@example.com" {...field} />
+                    <Input placeholder="max.mustermann@example.com" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -109,7 +114,7 @@ export default function AppointmentForm() {
             name="phone"
             render={({ field }) => (
             <FormItem>
-                <FormLabel>Phone Number</FormLabel>
+                <FormLabel>Telefonnummer</FormLabel>
                 <FormControl>
                 <Input placeholder="+49 123 4567890" {...field} />
                 </FormControl>
@@ -123,7 +128,7 @@ export default function AppointmentForm() {
             name="date"
             render={({ field }) => (
                 <FormItem className="flex flex-col">
-                <FormLabel>Preferred Date</FormLabel>
+                <FormLabel>Wunschtermin</FormLabel>
                 <Popover>
                     <PopoverTrigger asChild>
                     <FormControl>
@@ -135,9 +140,9 @@ export default function AppointmentForm() {
                         )}
                         >
                         {field.value ? (
-                            format(field.value, "PPP")
+                            format(field.value, "PPP", { locale: de })
                         ) : (
-                            <span>Pick a date</span>
+                            <span>Wählen Sie ein Datum</span>
                         )}
                         <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                         </Button>
@@ -145,6 +150,7 @@ export default function AppointmentForm() {
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
+                        locale={de}
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
@@ -164,16 +170,16 @@ export default function AppointmentForm() {
             name="time"
             render={({ field }) => (
                 <FormItem>
-                <FormLabel>Preferred Time</FormLabel>
+                <FormLabel>Wunschuhrzeit</FormLabel>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                     <SelectTrigger>
-                        <SelectValue placeholder="Select a time slot" />
+                        <SelectValue placeholder="Wählen Sie eine Uhrzeit" />
                     </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                         {timeSlots.map(slot => (
-                            <SelectItem key={slot} value={slot}>{slot}</SelectItem>
+                            <SelectItem key={slot} value={slot}>{slot} Uhr</SelectItem>
                         ))}
                     </SelectContent>
                 </Select>
@@ -187,10 +193,10 @@ export default function AppointmentForm() {
           name="issue"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Brief Description of Vehicle Issue</FormLabel>
+              <FormLabel>Kurze Beschreibung des Fahrzeugproblems</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="e.g., Making a strange noise when turning right, check engine light is on..."
+                  placeholder="z.B. Macht ein seltsames Geräusch beim Rechtsabbiegen, die Motorkontrollleuchte ist an..."
                   className="resize-none"
                   {...field}
                 />
@@ -203,9 +209,9 @@ export default function AppointmentForm() {
           {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Submitting...
+                Wird gesendet...
               </>
-            ) : "Request Appointment"}
+            ) : "Termin Anfragen"}
         </Button>
       </form>
     </Form>
