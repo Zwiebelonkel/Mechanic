@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="de" className="dark">
       <body className={`${rubik.variable} ${oswald.variable} font-body antialiased`}>
-        <SidebarProvider>
+        <SidebarProvider defaultOpen={false}>
           <Sidebar>
             <SidebarHeader>
                 <div className="flex items-center gap-2 p-2">
