@@ -69,11 +69,13 @@
   background-color: transparent;
   perspective: 1000px;
   cursor: pointer;
+  min-height: 200px;
 }
 
 @media (min-width: 640px) {
   .flip-card {
     aspect-ratio: 1 / 1;
+    min-height: auto;
   }
 }
 
