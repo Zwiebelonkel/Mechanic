@@ -3,7 +3,9 @@
 
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Star, Wrench, CircleGauge, Search, Disc } from 'lucide-react';
+import { Wrench, CircleGauge, Search, Disc } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+
 
 const icons = {
   Wrench,
@@ -15,19 +17,6 @@ const icons = {
 const ServiceCard = ({ service }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const Icon = icons[service.icon];
-
-  const renderStars = (rating) => {
-    const stars = [];
-    for (let i = 0; i < 5; i++) {
-      stars.push(
-        <Star
-          key={i}
-          className={`w-4 h-4 sm:w-5 sm:h-5 ${i < rating ? 'text-primary fill-primary' : 'text-gray-300'}`}
-        />
-      );
-    }
-    return <div className="flex">{stars}</div>;
-  };
 
   return (
     <div
@@ -41,7 +30,7 @@ const ServiceCard = ({ service }) => {
               <div className="p-3 bg-primary/10 rounded-full mb-3 ring-4 ring-primary/5">
                 <Icon className="w-8 h-8 text-primary drop-shadow-[0_0_8px_hsl(var(--primary))]" />
               </div>
-              <CardTitle className="font-headline text-xl">{service.title}</CardTitle>
+              <CardTitle className="font-headline text-xl sm:text-lg lg:text-xl">{service.title}</CardTitle>
             </CardHeader>
             <CardContent className="text-center text-muted-foreground px-4 pb-4">
               <p className="hidden lg:block text-sm">{service.description}</p>
@@ -54,11 +43,14 @@ const ServiceCard = ({ service }) => {
               <CardTitle className="font-headline text-lg sm:text-xl">Bewertungen</CardTitle>
             </CardHeader>
             <CardContent className="w-full px-4">
-              <ul className="space-y-3">
+              <ul className="space-y-4">
                 {Object.entries(service.rankings).map(([key, value]) => (
-                  <li key={key} className="flex justify-between items-center text-sm">
-                    <span className="font-semibold mr-2">{key}</span>
-                    {renderStars(value)}
+                  <li key={key} className="text-sm">
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="font-semibold mr-2">{key}</span>
+                      <span className="text-xs text-muted-foreground">{value}/5</span>
+                    </div>
+                    <Progress value={(value / 5) * 100} className="h-2" />
                   </li>
                 ))}
               </ul>
