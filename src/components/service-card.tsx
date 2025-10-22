@@ -41,7 +41,7 @@ const ServiceCard = ({ service }) => {
               <div className="p-3 sm:p-4 bg-primary/10 rounded-full mb-2 sm:mb-4 ring-4 sm:ring-8 ring-primary/5">
                 <Icon className="w-8 h-8 sm:w-10 sm:h-10 text-primary drop-shadow-[0_0_8px_hsl(var(--primary))]" />
               </div>
-              <CardTitle className="font-headline text-lg sm:text-xl md:text-2xl">{service.title}</CardTitle>
+              <CardTitle className="font-headline text-lg sm:text-xl">{service.title}</CardTitle>
             </CardHeader>
             <CardContent className="text-center text-muted-foreground px-2 sm:px-4">
               <p className="hidden lg:block text-sm">{service.description}</p>
@@ -51,7 +51,7 @@ const ServiceCard = ({ service }) => {
         <div className="flip-card-back">
           <Card className="bg-card border-border w-full h-full flex flex-col justify-center items-center">
             <CardHeader>
-              <CardTitle className="font-headline text-lg sm:text-xl md:text-2xl">Bewertungen</CardTitle>
+              <CardTitle className="font-headline text-lg sm:text-xl">Bewertungen</CardTitle>
             </CardHeader>
             <CardContent className="w-full px-2 sm:px-4">
               <ul className="space-y-2 sm:space-y-3">
