@@ -32,6 +32,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de" className="dark">
+      <head>
+        <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+      </head>
       <body className={`${rubik.variable} ${oswald.variable} font-body antialiased`}>
         <SidebarProvider defaultOpen={false}>
           <Sidebar collapsible="offcanvas">

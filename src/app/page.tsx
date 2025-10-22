@@ -6,6 +6,7 @@ import { placeholderImages } from '@/lib/images';
 import { Award, ShieldCheck, Heart, Quote } from 'lucide-react';
 import PromoModal from '@/components/promo-modal';
 import ServiceCard from '@/components/service-card';
+import ModelViewerContainer from '@/components/model-viewer-container';
 
 const services = [
   {
@@ -126,7 +127,7 @@ export default function Home() {
               Wir bieten umfassende Lösungen, um Ihr Fahrzeug in einwandfreiem Zustand zu halten.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service, index) => (
               <ServiceCard key={index} service={service} />
             ))}
@@ -157,6 +158,20 @@ export default function Home() {
             <div className="relative h-80 md:h-full min-h-[400px] rounded-lg overflow-hidden shadow-xl">
                  {aboutImage && <Image src={aboutImage.imageUrl} alt={aboutImage.description} fill className="object-cover" data-ai-hint={aboutImage.imageHint}/>}
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="model-viewer" className="py-20 md:py-28 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-headline font-bold">Erkunden Sie unser Meisterstück</h2>
+            <p className="mt-3 text-lg text-muted-foreground max-w-2xl mx-auto">
+              Werfen Sie einen interaktiven 3D-Blick auf den BMW M5.
+            </p>
+          </div>
+          <div className="flex justify-center">
+            <ModelViewerContainer />
           </div>
         </div>
       </section>
