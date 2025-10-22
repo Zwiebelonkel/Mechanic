@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { CircleGauge, Search, Wrench, Disc } from 'lucide-react';
+import PromoModal from '@/components/promo-modal';
 
 const services = [
   {
@@ -33,6 +34,7 @@ export default function Home() {
 
   return (
     <>
+      <PromoModal />
       <section className="relative h-[60vh] md:h-[70vh] w-full flex items-center justify-center text-center text-white">
         {heroImage && (
           <Image
