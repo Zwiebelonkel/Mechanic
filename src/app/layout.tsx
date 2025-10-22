@@ -34,7 +34,7 @@ export default function RootLayout({
     <html lang="de" className="dark">
       <body className={`${rubik.variable} ${oswald.variable} font-body antialiased`}>
         <SidebarProvider defaultOpen={false}>
-          <Sidebar>
+          <Sidebar collapsible="offcanvas">
             <SidebarHeader>
                 <div className="flex items-center gap-2 p-2">
                     <Car className="h-6 w-6" />
