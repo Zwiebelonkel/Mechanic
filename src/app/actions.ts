@@ -4,6 +4,7 @@ import { z } from "zod";
 import { de } from 'date-fns/locale';
 import { format } from "date-fns";
 
+// Define schema (this is okay to export as a constant)
 export const appointmentSchema = z.object({
   name: z.string().min(2, { message: "Der Name muss mindestens 2 Zeichen lang sein." }),
   email: z.string().email({ message: "Bitte geben Sie eine gültige E-Mail-Adresse ein." }),
@@ -15,6 +16,7 @@ export const appointmentSchema = z.object({
 
 export type AppointmentData = z.infer<typeof appointmentSchema>;
 
+// This async function is correct
 export async function scheduleAppointment(data: AppointmentData) {
   console.log("Termin wird vereinbart:", data);
   await new Promise(resolve => setTimeout(resolve, 1500));

@@ -1,6 +1,30 @@
 {
   "placeholderImages": [
     {
+      "id": "hero-mechanic-2",
+      "description": "A close-up of a mechanic working on a German car engine.",
+      "imageUrl": "https://images.unsplash.com/photo-1616422285810-2b0202237834?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxnZXJtYW4lMjBjYXIlMjBtZWNoYW5pY3xlbnwwfHx8fDE3NjM3NjYxOTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "german car"
+    },
+    {
+      "id": "about-us",
+      "description": "A clean and modern car workshop.",
+      "imageUrl": "https://images.unsplash.com/photo-1553792283-2eb38b643a62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxjbGVhbiUyMGNhciUyMHdvcmtzaG9wfGVufDB8fHx8MTc2Mzc2NjM2OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "clean workshop"
+    },
+    {
+      "id": "customer-1",
+      "description": "Portrait of a happy male customer.",
+      "imageUrl": "https://images.unsplash.com/photo-1604488912264-dfed70450d76?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxoYXBweSUyMG1hbnxlbnwwfHx8fDE3NjExMzg3Nzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "happy man"
+    },
+    {
+      "id": "customer-2",
+      "description": "Portrait of a satisfied female customer.",
+      "imageUrl": "https://images.unsplash.com/photo-1542353436-312f0e1f67ff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxoYXBweSUyMHdvbWFufGVufDB8fHx8MTc2MTEzMDE4MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "happy woman"
+    },
+    {
       "id": "hero-mechanic",
       "description": "A mechanic working on a car in a modern workshop.",
       "imageUrl": "https://images.unsplash.com/photo-1599474151975-1f978922fa02?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxjYXIlMjBtZWNoYW5pY3xlbnwwfHx8fDE3NjEwNTYwNzN8MA&ixlib=rb-4.1.0&q=80&w=1080",

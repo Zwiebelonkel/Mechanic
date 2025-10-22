@@ -3,6 +3,10 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
+import { Rubik, Oswald } from 'next/font/google';
+
+const rubik = Rubik({ subsets: ['latin'], variable: '--font-body' });
+const oswald = Oswald({ subsets: ['latin'], variable: '--font-headline', weight: ['400', '700'] });
 
 export const metadata: Metadata = {
   title: "Anton's Werkstatt",
@@ -16,12 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de" className="dark">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-body antialiased">
+      <body className={`${rubik.variable} ${oswald.variable} font-body antialiased`}>
         <div className="flex flex-col min-h-screen">
           <Header />
           <main className="flex-1">{children}</main>
