@@ -31,7 +31,7 @@ const services = [
   {
     icon: 'Search',
     title: 'Inspektionen & Diagnosen',
-    description: 'Modernste Ausrüstung zur Diagnose von Problemen und zur Gewährleistung der Verkehrssicherheit Ihres Autos.',
+    description: 'Modernste Ausrüstung zur Diagnose von Problemen.',
     rankings: {
       Dauer: 2,
       Preis: 4,

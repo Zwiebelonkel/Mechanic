@@ -9,7 +9,7 @@ export const placeholderImages = [
   {
     id: "about-us",
     description: "A clean and modern car workshop.",
-    imageUrl: "/images/about-us.jpg",
+    imageUrl: "/images/garage.jpg",
     imageHint: "clean workshop",
   },
   {
