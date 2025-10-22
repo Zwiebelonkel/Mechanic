@@ -44,7 +44,7 @@ const ServiceCard = ({ service }) => {
               <CardTitle className="font-headline text-lg sm:text-xl md:text-2xl">{service.title}</CardTitle>
             </CardHeader>
             <CardContent className="text-center text-muted-foreground px-2 sm:px-4">
-              <p className="hidden sm:block text-sm">{service.description}</p>
+              <p className="hidden md:block text-sm">{service.description}</p>
             </CardContent>
           </Card>
         </div>
