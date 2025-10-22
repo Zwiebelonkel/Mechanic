@@ -92,10 +92,10 @@ export default {
   },
   plugins: [
     require('tailwindcss-animate'),
-    function ({ matchUtilities, theme }) {
+    function ({ matchUtilities, theme }: { matchUtilities: any; theme: any }) {
       matchUtilities(
         {
-          'text-shadow': (value) => ({
+          'text-shadow': (value: any) => ({
             textShadow: value,
           }),
         },

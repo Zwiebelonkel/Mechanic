@@ -12,7 +12,18 @@ const icons = {
   Disc,
 };
 
-const ServiceCard = ({ service }) => {
+export interface Service {
+  icon: 'Wrench' | 'CircleGauge' | 'Search' | 'Disc';
+  title: string;
+  description: string;
+  rankings: {
+    Dauer: number;
+    Preis: number;
+    Erfahrung: number;
+  };
+}
+
+const ServiceCard = ({ service }: { service: Service }) => {
   const Icon = icons[service.icon];
 
   return (

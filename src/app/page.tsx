@@ -5,10 +5,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { placeholderImages } from '@/lib/images';
 import { Award, ShieldCheck, Heart, Quote } from 'lucide-react';
 import PromoModal from '@/components/promo-modal';
-import ServiceCard from '@/components/service-card';
+import ServiceCard, { Service } from '@/components/service-card';
 import ModelViewerContainer from '@/components/model-viewer-container';
 
-const services = [
+const services: Service[] = [
   {
     icon: 'Wrench',
     title: 'Allgemeine Reparaturen',
