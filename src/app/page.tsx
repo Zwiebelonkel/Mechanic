@@ -1,31 +1,52 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { CircleGauge, Search, Wrench, Disc, Award, ShieldCheck, Heart, Quote } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
+import { placeholderImages } from '@/lib/images';
+import { Award, ShieldCheck, Heart, Quote } from 'lucide-react';
 import PromoModal from '@/components/promo-modal';
+import ServiceCard from '@/components/service-card';
 
 const services = [
   {
-    icon: Wrench,
+    icon: 'Wrench',
     title: 'Allgemeine Reparaturen',
     description: 'Von der Motordiagnose bis zur Bremsenreparatur erledigen wir alles mit Präzision und Sorgfalt.',
+    rankings: {
+      Dauer: 4,
+      Preis: 3,
+      Erfahrung: 5,
+    },
   },
   {
-    icon: CircleGauge,
+    icon: 'CircleGauge',
     title: 'Geplante Wartung',
     description: 'Halten Sie Ihr Fahrzeug mit unseren umfassenden Wartungsdiensten in Top-Zustand.',
+    rankings: {
+      Dauer: 3,
+      Preis: 4,
+      Erfahrung: 5,
+    },
   },
   {
-    icon: Search,
+    icon: 'Search',
     title: 'Inspektionen & Diagnosen',
     description: 'Modernste Ausrüstung zur Diagnose von Problemen und zur Gewährleistung der Verkehrssicherheit Ihres Autos.',
+    rankings: {
+      Dauer: 2,
+      Preis: 4,
+      Erfahrung: 5,
+    },
   },
   {
-    icon: Disc,
+    icon: 'Disc',
     title: 'Reifenservice',
     description: 'Reifenmontage, Auswuchten und Achsvermessung für eine reibungslose und sichere Fahrt.',
+    rankings: {
+      Dauer: 1,
+      Preis: 5,
+      Erfahrung: 4,
+    },
   },
 ];
 
@@ -51,18 +72,18 @@ const testimonials = [
   {
     name: 'Markus L.',
     text: "Absolut erstklassiger Service! Das Team von Anton's Werkstatt war professionell, schnell und hat das Problem mit meinem Auto im Handumdrehen gelöst. Sehr zu empfehlen!",
-    image: PlaceHolderImages.find(p => p.id === 'customer-1'),
+    image: placeholderImages.find(p => p.id === 'customer-1'),
   },
   {
     name: 'Julia K.',
     text: "Ich bin so froh, diese Werkstatt gefunden zu haben. Faire Preise, ehrliche Beratung und eine wirklich freundliche Atmosphäre. Ich komme definitiv wieder!",
-    image: PlaceHolderImages.find(p => p.id === 'customer-2'),
+    image: placeholderImages.find(p => p.id === 'customer-2'),
   }
 ];
 
 export default function Home() {
-  const heroImage = PlaceHolderImages.find(p => p.id === 'hero-mechanic-2');
-  const aboutImage = PlaceHolderImages.find(p => p.id === 'about-us');
+  const heroImage = placeholderImages.find(p => p.id === 'hero-mechanic-2');
+  const aboutImage = placeholderImages.find(p => p.id === 'about-us');
 
   return (
     <>
@@ -105,19 +126,9 @@ export default function Home() {
               Wir bieten umfassende Lösungen, um Ihr Fahrzeug in einwandfreiem Zustand zu halten.
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service, index) => (
-              <Card key={index} className="bg-card border-border hover:border-primary transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20">
-                <CardHeader className="items-center text-center">
-                  <div className="p-4 bg-primary/10 rounded-full mb-4 ring-8 ring-primary/5">
-                    <service.icon className="w-10 h-10 text-primary drop-shadow-[0_0_8px_hsl(var(--primary))]" />
-                  </div>
-                  <CardTitle className="font-headline text-2xl">{service.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center text-muted-foreground">
-                  <p>{service.description}</p>
-                </CardContent>
-              </Card>
+              <ServiceCard key={index} service={service} />
             ))}
           </div>
         </div>
