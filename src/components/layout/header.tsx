@@ -12,9 +12,15 @@ export default function Header() {
             Anton's Werkstatt
           </span>
         </Link>
-        <nav className="flex items-center gap-4 text-sm ml-auto">
+        <nav className="flex items-center gap-1 text-sm ml-auto">
           <Button variant="ghost" asChild>
-            <Link href="/">Startseite</Link>
+            <Link href="/#">Startseite</Link>
+          </Button>
+          <Button variant="ghost" asChild>
+            <Link href="/#services">Dienste</Link>
+          </Button>
+           <Button variant="ghost" asChild>
+            <Link href="/#why-us">Über uns</Link>
           </Button>
           <Button asChild>
             <Link href="/appointments">Termin Buchen</Link>
