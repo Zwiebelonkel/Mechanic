@@ -68,8 +68,14 @@
 .flip-card {
   background-color: transparent;
   perspective: 1000px;
-  aspect-ratio: 1 / 1;
 }
+
+@media (min-width: 640px) {
+  .flip-card {
+    aspect-ratio: 1 / 1;
+  }
+}
+
 
 .flip-card-inner {
   position: relative;
@@ -78,9 +84,10 @@
   text-align: center;
   transition: transform 0.6s;
   transform-style: preserve-3d;
+  border-radius: var(--radius);
 }
 
-.flip-card-inner.flipped {
+.flip-card:hover .flip-card-inner {
   transform: rotateY(180deg);
 }
 
@@ -91,6 +98,8 @@
   height: 100%;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  border-radius: var(--radius);
+  overflow: hidden;
 }
 
 .flip-card-back {
