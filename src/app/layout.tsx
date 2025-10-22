@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/sidebar';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Home, Wrench, Info, Calendar, Car } from 'lucide-react';
+import { Home, Wrench, Info, Calendar } from 'lucide-react';
 import Link from 'next/link';
 
 const rubik = Rubik({ subsets: ['latin'], variable: '--font-body' });
@@ -36,10 +36,6 @@ export default function RootLayout({
         <SidebarProvider defaultOpen={false}>
           <Sidebar collapsible="offcanvas">
             <SidebarHeader>
-                <div className="flex items-center gap-2 p-2">
-                    <Car className="h-6 w-6" />
-                    <span className="font-bold">Anton's Werkstatt</span>
-                </div>
             </SidebarHeader>
             <SidebarContent>
               <SidebarMenu>
