@@ -1,11 +1,9 @@
 
 'use client';
 
-import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Wrench, CircleGauge, Search, Disc } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
-
 
 const icons = {
   Wrench,
@@ -21,7 +19,7 @@ const ServiceCard = ({ service }) => {
     <div className="flip-card">
       <div className="flip-card-inner">
         <div className="flip-card-front">
-          <Card className="bg-card border-border hover:border-primary transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20 w-full h-full flex flex-col justify-center items-center p-4">
+          <Card className="bg-card border-border hover:border-primary transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20 w-full flex flex-col justify-center items-center p-4 min-h-[200px] h-full">
             <CardHeader className="items-center text-center p-0 mb-3">
               <div className="p-3 bg-primary/10 rounded-full mb-3 ring-4 ring-primary/5">
                 <Icon className="w-8 h-8 text-primary drop-shadow-[0_0_8px_hsl(var(--primary))]" />
@@ -34,7 +32,7 @@ const ServiceCard = ({ service }) => {
           </Card>
         </div>
         <div className="flip-card-back">
-          <Card className="bg-card border-primary w-full h-full flex flex-col justify-center items-center p-4">
+          <Card className="bg-card border-primary w-full flex flex-col justify-center items-center p-4 min-h-[200px] h-full">
             <CardHeader className="p-0 mb-4">
               <CardTitle className="font-headline text-lg sm:text-xl">{service.title}</CardTitle>
             </CardHeader>
