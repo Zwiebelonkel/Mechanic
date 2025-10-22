@@ -68,6 +68,7 @@
 .flip-card {
   background-color: transparent;
   perspective: 1000px;
+  cursor: pointer;
 }
 
 @media (min-width: 640px) {
@@ -75,7 +76,6 @@
     aspect-ratio: 1 / 1;
   }
 }
-
 
 .flip-card-inner {
   position: relative;
