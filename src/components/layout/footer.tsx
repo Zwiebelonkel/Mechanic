@@ -2,7 +2,7 @@ import { Mail, MapPin, Phone } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-secondary/50 text-card-foreground border-t">
+    <footer id="contact" className="bg-secondary/50 text-card-foreground border-t">
       <div className="container mx-auto px-6 py-12">
         <div className="flex flex-col items-center text-center">
           <h2 className="text-3xl font-bold font-headline mb-6">Kontaktieren Sie uns</h2>
