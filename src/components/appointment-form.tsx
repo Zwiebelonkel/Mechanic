@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import type { AppointmentData } from "@/app/actions";
 import { appointmentSchema } from "@/app/actions";
-import { scheduleAppointment } from "@/app/actions.server";
+import { scheduleAppointment } from "@/app/actions.client";
 
 import { Button } from "@/components/ui/button";
 import {

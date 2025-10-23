@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Build a standalone server output suitable for Docker/Cloud Run
-  output: 'standalone',
+  output: "export",
+  distDir: "dist",
   images: {
     unoptimized: true,
   },
