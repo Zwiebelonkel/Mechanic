@@ -1,7 +1,7 @@
-import Link from 'next/link';
-import { Car } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import Link from "next/link";
+import { Car } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export default function Header() {
   return (
@@ -11,9 +11,7 @@ export default function Header() {
           <SidebarTrigger />
           <Link href="/" className="flex items-center space-x-2">
             <Car className="h-6 w-6" />
-            <span className="font-bold sm:inline-block">
-              Anton's Werkstatt
-            </span>
+            <span className="font-bold sm:inline-block">Meisterei Seibel</span>
           </Link>
         </div>
         <nav className="flex items-center gap-1 text-sm ml-auto">
