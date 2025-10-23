@@ -17,7 +17,7 @@ export default function Header() {
         </div>
         <nav className="flex items-center gap-1 text-sm ml-auto">
           <Button asChild>
-            <Link href="/#contact">Kontakt</Link>
+            <Link href="/appointments">Termine</Link>
           </Button>
         </nav>
       </div>
