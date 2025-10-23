@@ -2,9 +2,11 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import type { AppointmentData } from "@/app/actions";
-import { appointmentSchema } from "@/app/actions";
-import { scheduleAppointment } from "@/app/actions.client";
+import {
+  appointmentSchema,
+  scheduleAppointment,
+  type AppointmentData,
+} from "@/app/actions";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -68,26 +70,16 @@ export default function AppointmentForm() {
     try {
       const result = await scheduleAppointment(data);
       const message = result.success
-        ? `Termin bestätigt für ${format(data.date, "PPP", {
-            locale: de,
-          })} um ${data.time} Uhr. Eine Bestätigung wurde an ${
-            data.email
-          } gesendet.`
+        ? result.message
         : "Terminvereinbarung fehlgeschlagen. Bitte versuchen Sie es erneut.";
 
-      if (result.success) {
-        toast({
-          title: "Erfolg!",
-          description: message,
-        });
-        form.reset();
-      } else {
-        toast({
-          title: "Fehler",
-          description: message,
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: result.success ? "Erfolg!" : "Fehler",
+        description: message,
+        variant: result.success ? "default" : "destructive",
+      });
+
+      if (result.success) form.reset();
     } catch (error) {
       toast({
         title: "Ein unerwarteter Fehler ist aufgetreten.",
@@ -130,6 +122,7 @@ export default function AppointmentForm() {
             )}
           />
         </div>
+
         <FormField
           control={form.control}
           name="phone"
@@ -143,6 +136,7 @@ export default function AppointmentForm() {
             </FormItem>
           )}
         />
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <FormField
             control={form.control}
@@ -188,6 +182,7 @@ export default function AppointmentForm() {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="time"
@@ -216,6 +211,7 @@ export default function AppointmentForm() {
             )}
           />
         </div>
+
         <FormField
           control={form.control}
           name="issue"
@@ -224,7 +220,7 @@ export default function AppointmentForm() {
               <FormLabel>Kurze Beschreibung des Fahrzeugproblems</FormLabel>
               <FormControl>
                 <Textarea
-                  placeholder="z.B. Macht ein seltsames Geräusch beim Rechtsabbiegen, die Motorkontrollleuchte ist an..."
+                  placeholder="z.B. seltsames Geräusch beim Rechtsabbiegen, Motorkontrollleuchte an..."
                   className="resize-none"
                   {...field}
                 />
@@ -233,6 +229,7 @@ export default function AppointmentForm() {
             </FormItem>
           )}
         />
+
         <Button
           type="submit"
           disabled={isSubmitting}
@@ -244,7 +241,7 @@ export default function AppointmentForm() {
               Wird gesendet...
             </>
           ) : (
-            "Termin Anfragen"
+            "Termin anfragen"
           )}
         </Button>
       </form>

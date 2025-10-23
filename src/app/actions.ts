@@ -27,21 +27,57 @@ export type AppointmentData = z.infer<typeof appointmentSchema>;
 
 // This async function is correct
 export async function scheduleAppointment(data: AppointmentData) {
-  console.log("Termin wird vereinbart:", data);
-  await new Promise((resolve) => setTimeout(resolve, 1500));
+  // const API_URL = "https://mechanicbackend-bwey.onrender.com/api/appointments";
+  const API_URL = "http://localhost:3000/api/appointments";
 
-  if (data.name.toLowerCase().includes("fail")) {
+  try {
+    console.log("📤 Sende Termin an Backend:", data);
+
+    // Start- und Endzeit im ISO-Format (Termin dauert 1 Stunde)
+    const start = new Date(
+      `${format(data.date, "yyyy-MM-dd")}T${data.time}:00`
+    );
+    const end = new Date(start.getTime() + 60 * 60 * 1000);
+
+    const body = {
+      name: data.name,
+      email: data.email,
+      phone: data.phone,
+      service: data.issue,
+      start_iso: start.toISOString(),
+      end_iso: end.toISOString(),
+      notes: "",
+    };
+
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    const result = await res.json();
+
+    if (!res.ok || !result.success) {
+      console.error("❌ Backend-Fehler:", result);
+      return {
+        success: false,
+        message:
+          result.error ||
+          "Terminvereinbarung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+      };
+    }
+
+    return {
+      success: true,
+      message: `✅ Termin bestätigt für ${format(data.date, "PPP", {
+        locale: de,
+      })} um ${data.time}. Eine Bestätigung wurde an ${data.email} gesendet.`,
+    };
+  } catch (error: any) {
+    console.error("⚠️ Netzwerkfehler:", error);
     return {
       success: false,
-      message:
-        "Terminvereinbarung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+      message: "Verbindungsfehler. Bitte versuchen Sie es später erneut.",
     };
   }
-
-  return {
-    success: true,
-    message: `Termin bestätigt für ${format(data.date, "PPP", {
-      locale: de,
-    })} um ${data.time}. Eine Bestätigung wurde an ${data.email} gesendet.`,
-  };
 }
