@@ -41,8 +41,8 @@ export default function RootLayout({
       <body className={`${rubik.variable} ${oswald.variable} font-body antialiased`}>
         <SidebarProvider defaultOpen={false}>
            <Sidebar collapsible="offcanvas">
-            <SidebarHeader>
-              <div className="w-full flex items-center justify-center p-4">
+            <SidebarHeader className="p-4">
+              <div className="w-full flex items-center justify-center">
                 <div className="relative h-24 w-full">
                   <Image
                     src="/images/logo_transparent.png"
