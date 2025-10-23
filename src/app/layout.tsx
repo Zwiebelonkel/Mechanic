@@ -99,7 +99,7 @@ export default function RootLayout({
                 </SidebarMenu>
               </SidebarContent>
               <SidebarFooter>
-                <div className="flex justify-center mb-2">
+                <div className="flex justify-end mb-2">
                   <ThemeToggle />
                 </div>
                 <div className="flex items-center gap-3 p-2 border rounded-md">
