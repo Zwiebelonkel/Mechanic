@@ -43,7 +43,7 @@ export default function RootLayout({
            <Sidebar collapsible="offcanvas">
             <SidebarHeader>
               <div className="w-full flex items-center justify-center p-4">
-                <div className="relative h-16 w-full">
+                <div className="relative h-24 w-full">
                   <Image
                     src="/images/logo_transparent.png"
                     alt="Anton's Werkstatt"
