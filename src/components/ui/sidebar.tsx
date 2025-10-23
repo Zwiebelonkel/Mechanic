@@ -362,21 +362,11 @@ const SidebarHeader = React.forwardRef<
       ref={ref}
       data-sidebar="header"
       className={cn(
-        "flex flex-col gap-2 p-4 items-center justify-center text-center",
+        "flex h-14 items-center border-b",
         className
       )}
       {...props}
     >
-      <div className="w-full flex items-center justify-center">
-        <div className="relative h-24 w-48 sm:h-1 sm:w-56 md:h-36 md:w-72 lg:h-44 lg:w-96">
-          <Image
-            src="/images/logo_transparent.png"
-            alt="Anton\'s Werkstatt"
-            fill
-            style={{ objectFit: "contain" }}
-          />
-        </div>
-      </div>
       {children}
     </div>
   );
@@ -391,7 +381,7 @@ const SidebarFooter = React.forwardRef<
     <div
       ref={ref}
       data-sidebar="footer"
-      className={cn("flex flex-col gap-2 p-2", className)}
+      className={cn("flex flex-col gap-2 p-2 border-t", className)}
       {...props}
     />
   );
@@ -422,7 +412,7 @@ const SidebarContent = React.forwardRef<
       ref={ref}
       data-sidebar="content"
       className={cn(
-        "flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
+        "flex min-h-0 flex-1 flex-col gap-2 overflow-auto p-2 group-data-[collapsible=icon]:overflow-hidden",
         className
       )}
       {...props}
