@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
@@ -98,7 +99,10 @@ export default function RootLayout({
                 </SidebarMenu>
               </SidebarContent>
               <SidebarFooter>
-                <div className="flex items-center gap-3 p-2">
+                <div className="flex justify-center mb-2">
+                  <ThemeToggle />
+                </div>
+                <div className="flex items-center gap-3 p-2 border rounded-md">
                   <Avatar className="h-10 w-10">
                     <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
                     <AvatarFallback>CN</AvatarFallback>
@@ -107,7 +111,6 @@ export default function RootLayout({
                     <span className="text-sm font-semibold text-foreground">Anton Seibel</span>
                     <span className="text-xs text-muted-foreground">anton.seibel@werkstatt.de</span>
                   </div>
-                  <ThemeToggle />
                 </div>
               </SidebarFooter>
             </Sidebar>
