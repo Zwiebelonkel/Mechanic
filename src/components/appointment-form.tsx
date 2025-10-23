@@ -37,7 +37,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { de } from "date-fns/locale";
 import { Calendar as CalendarIcon, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const timeSlots = [
   "09:00",
@@ -51,9 +51,35 @@ const timeSlots = [
   "17:00",
 ];
 
+interface CalendarEvent {
+  id: string;
+  summary: string;
+  description: string;
+  start: { dateTime: string; date: string };
+  end: { dateTime: string; date: string };
+}
+
 export default function AppointmentForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [events, setEvents] = useState<CalendarEvent[]>([]);
   const { toast } = useToast();
+
+  useEffect(() => {
+    const apiUrl = `${
+      process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
+    }/api/calendar/events`;
+
+    fetch(apiUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          setEvents(data.events);
+        }
+      })
+      .catch((err) => {
+        console.error("Fehler beim Laden der Kalenderdaten:", err);
+      });
+  }, []);
 
   const form = useForm<AppointmentData>({
     resolver: zodResolver(appointmentSchema),
@@ -199,11 +225,43 @@ export default function AppointmentForm() {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {timeSlots.map((slot) => (
-                      <SelectItem key={slot} value={slot}>
-                        {slot} Uhr
-                      </SelectItem>
-                    ))}
+                    {timeSlots.map((slot) => {
+                      const isBlocked = form.watch("date")
+                        ? events.some((event) => {
+                            const eventDate = new Date(
+                              event.start.dateTime || event.start.date
+                            );
+                            const selectedDate = form.watch("date");
+                            const slotTime = slot.split(":");
+                            const slotDate = new Date(selectedDate);
+                            slotDate.setHours(
+                              parseInt(slotTime[0]),
+                              parseInt(slotTime[1]),
+                              0,
+                              0
+                            );
+
+                            return (
+                              eventDate.toDateString() ===
+                                selectedDate.toDateString() &&
+                              eventDate.getHours() === parseInt(slotTime[0])
+                            );
+                          })
+                        : false;
+
+                      return (
+                        <SelectItem
+                          key={slot}
+                          value={slot}
+                          disabled={isBlocked}
+                          className={cn(
+                            isBlocked && "opacity-50 cursor-not-allowed"
+                          )}
+                        >
+                          {slot} Uhr {isBlocked && "(Blockiert)"}
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
                 <FormMessage />
