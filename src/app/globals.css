@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -106,4 +107,12 @@
 
 .flip-card-back {
   transform: rotateY(180deg);
+}
+@layer components {
+  [data-sidebar='menu-item'] {
+    @apply relative before:absolute before:bottom-0 before:left-0 before:w-full before:h-[2px] before:bg-primary before:scale-x-0 before:transition-transform before:duration-300 before:ease-in-out;
+  }
+  [data-sidebar='menu-item']:hover::before {
+    @apply scale-x-100;
+  }
 }
