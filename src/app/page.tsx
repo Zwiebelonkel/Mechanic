@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -162,7 +163,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="model-viewer" className="py-20 md:py-28 bg-background">
+      <section id="model-viewer" className="py-20 md:py-28 bg-background overflow-visible">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-headline font-bold">Erkunden Sie unser Meisterstück</h2>
@@ -170,7 +171,7 @@ export default function Home() {
               Werfen Sie einen interaktiven 3D-Blick auf den BMW M5.
             </p>
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center -mt-24 md:-mt-48 relative z-10 mb-[-12rem]">
             <ModelViewerContainer />
           </div>
         </div>
@@ -178,7 +179,7 @@ export default function Home() {
 
        <section id="testimonials" className="py-20 md:py-28 bg-background">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 pt-12">
             <h2 className="text-4xl md:text-5xl font-headline font-bold">Was unsere Kunden sagen</h2>
             <p className="mt-3 text-lg text-muted-foreground max-w-2xl mx-auto">
               Ihre Zufriedenheit ist unser größter Antrieb.

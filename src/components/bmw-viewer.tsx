@@ -1,3 +1,4 @@
+
 /* eslint-disable */
 'use client';
 
@@ -15,11 +16,13 @@ const BmwViewer = () => {
       shadow-intensity="1"
       disable-zoom
       disable-pan
-      style={{ width: '100%', height: '300px' }}
-      field-of-view="25deg"
+      style={{ width: '100%', height: '400px' }}
+      field-of-view="20deg"
     ></model-viewer>
   );
 };
 
 
 export default BmwViewer;
+
+    
