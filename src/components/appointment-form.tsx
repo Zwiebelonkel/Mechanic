@@ -65,9 +65,7 @@ export default function AppointmentForm() {
   const { toast } = useToast();
 
   useEffect(() => {
-    const apiUrl = `${
-      process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000"
-    }/api/calendar/events`;
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/calendar/events`;
 
     fetch(apiUrl)
       .then((res) => res.json())

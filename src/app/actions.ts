@@ -27,8 +27,8 @@ export type AppointmentData = z.infer<typeof appointmentSchema>;
 
 // This async function is correct
 export async function scheduleAppointment(data: AppointmentData) {
-  // const API_URL = "https://mechanicbackend-bwey.onrender.com/api/appointments";
-  const API_URL = "http://localhost:3000/api/appointments";
+  const API_URL = "https://mechanicbackend-bwey.onrender.com/api/appointments";
+  // const API_URL = "http://localhost:3000/api/appointments";
 
   try {
     console.log("📤 Sende Termin an Backend:", data);
