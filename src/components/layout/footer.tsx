@@ -28,7 +28,7 @@ export default function Footer() {
             {/* Adresse */}
             <div className="flex items-center justify-center gap-3 hover:text-primary transition-colors">
               <MapPin className="h-6 w-6" />
-              <span>Industriestraße 8, 28777 Bremen</span>
+              <span>Pürschweg 22, 28757 Bremen</span>
             </div>
           </div>
         </div>

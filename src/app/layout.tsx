@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/sidebar';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Home, Wrench, Info, Calendar, GalleryHorizontal, BookOpen } from 'lucide-react';
+import { Home, Wrench, Info, Calendar, GalleryHorizontal, BookOpen, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
@@ -101,6 +101,14 @@ export default function RootLayout({
                       <Link href="/story">
                         <BookOpen />
                         <span>Geschichte</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                   <SidebarMenuItem>
+                    <SidebarMenuButton asChild tooltip={{ children: 'Anfahrt' }}>
+                      <Link href="/anfahrt">
+                        <MapPin />
+                        <span>Anfahrt</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
