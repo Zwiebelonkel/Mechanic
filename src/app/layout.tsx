@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/sidebar';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Home, Wrench, Info, Calendar } from 'lucide-react';
+import { Home, Wrench, Info, Calendar, GalleryHorizontal, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
@@ -85,6 +85,22 @@ export default function RootLayout({
                       <Link href="/#why-us">
                         <Info />
                         <span>Über uns</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild tooltip={{ children: 'Gallerie' }}>
+                      <Link href="/gallery">
+                        <GalleryHorizontal />
+                        <span>Gallerie</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild tooltip={{ children: 'Geschichte' }}>
+                      <Link href="/story">
+                        <BookOpen />
+                        <span>Geschichte</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
