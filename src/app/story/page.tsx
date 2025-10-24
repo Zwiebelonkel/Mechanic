@@ -81,7 +81,7 @@ export default function StoryPage() {
                     <div className="relative flex items-center w-full">
                       <div className={cn(
                         "w-1/2",
-                        index % 2 === 0 ? "pr-8 text-right" : "pl-8 text-left order-2"
+                        index % 2 === 0 ? "pr-8 text-right" : "pl-8 text-left ml-auto"
                       )}>
                          <p className="text-sm text-muted-foreground">{event.year}</p>
                          <h3 className="text-xl font-headline font-semibold mb-2">{event.title}</h3>
