@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import { placeholderImages } from "@/lib/images";
 import ModelViewerContainer from "@/components/model-viewer-container";
@@ -8,7 +9,7 @@ export default function GalleryPage() {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="text-center mb-10">
-        <h1 className="text-4xl font-headline font-bold">Gallerie</h1>
+        <h1 className="text-5xl font-headline font-bold">Gallerie</h1>
         <p className="mt-2 text-muted-foreground">
           Ein Einblick in unsere Arbeit und unsere Werkstatt.
         </p>
