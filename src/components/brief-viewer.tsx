@@ -13,6 +13,7 @@ const BriefViewer = () => {
       camera-controls
       shadow-intensity="1"
       environment-image="/images/garage.jpg"
+      exposure="1.5"
       style={{ width: '100%', height: '100%', minHeight: '400px' }}
     ></model-viewer>
   );
