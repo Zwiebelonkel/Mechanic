@@ -16,10 +16,8 @@ export default function TimelineAnimation({ children }: TimelineAnimationProps) 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            observer.unobserve(entry.target);
-          }
+          // Set visibility based on whether the element is intersecting or not
+          setIsVisible(entry.isIntersecting);
         });
       },
       {
