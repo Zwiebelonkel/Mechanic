@@ -1,3 +1,4 @@
+
 import { MapPin, Car, TramFront } from 'lucide-react';
 
 export default function DirectionsPage() {
@@ -15,11 +16,12 @@ export default function DirectionsPage() {
 
       <div className="grid md:grid-cols-2 gap-10 items-start">
         {/* Map Section */}
-        <div className="relative w-full h-80 md:h-full rounded-lg overflow-hidden shadow-lg border">
+        <div className="relative w-full h-80 md:h-full rounded-lg overflow-hidden shadow-lg border bg-background">
           <iframe
             src={mapSrc}
             width="100%"
             height="100%"
+            className="dark:invert dark:hue-rotate-180 transition-all duration-300"
             style={{ border: 0 }}
             allowFullScreen={true}
             loading="lazy"
