@@ -14,7 +14,6 @@ const BmwViewer = () => {
       camera-controls
       auto-rotate
       shadow-intensity="1"
-      environment-image="/images/garage.jpg"
       disable-zoom
       disable-pan
       style={{ width: '100%', height: '400px' }}
