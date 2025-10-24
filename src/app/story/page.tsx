@@ -4,6 +4,7 @@ import { placeholderImages } from "@/lib/images";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle, Award, Users, Wrench } from "lucide-react";
 import { cn } from "@/lib/utils";
+import TimelineAnimation from "@/components/timeline-animation";
 
 const timelineEvents = [
   {
@@ -76,19 +77,21 @@ export default function StoryPage() {
               
               <div className="space-y-16">
                 {timelineEvents.map((event, index) => (
-                  <div key={index} className="relative flex items-center w-full">
-                    <div className={cn(
-                      "w-1/2",
-                      index % 2 === 0 ? "pr-8 text-right" : "pl-8 text-left order-2"
-                    )}>
-                       <p className="text-sm text-muted-foreground">{event.year}</p>
-                       <h3 className="text-xl font-headline font-semibold mb-2">{event.title}</h3>
-                       <p className="text-sm text-muted-foreground">{event.description}</p>
+                  <TimelineAnimation key={index}>
+                    <div className="relative flex items-center w-full">
+                      <div className={cn(
+                        "w-1/2",
+                        index % 2 === 0 ? "pr-8 text-right" : "pl-8 text-left order-2"
+                      )}>
+                         <p className="text-sm text-muted-foreground">{event.year}</p>
+                         <h3 className="text-xl font-headline font-semibold mb-2">{event.title}</h3>
+                         <p className="text-sm text-muted-foreground">{event.description}</p>
+                      </div>
+                       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-background p-2 rounded-full border-2 border-primary">
+                        <event.icon className="w-5 h-5 text-primary"/>
+                      </div>
                     </div>
-                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-background p-2 rounded-full border-2 border-primary">
-                      <event.icon className="w-5 h-5 text-primary"/>
-                    </div>
-                  </div>
+                  </TimelineAnimation>
                 ))}
               </div>
           </div>
