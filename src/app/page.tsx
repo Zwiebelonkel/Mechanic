@@ -156,7 +156,7 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <div className="relative h-80 md:h-full min-h-[400px] rounded-lg overflow-hidden shadow-xl">
+            <div className="relative h-80 md:h-full min-h-[400px] rounded-lg overflow-hidden">
                  <BriefViewerContainer />
             </div>
           </div>
