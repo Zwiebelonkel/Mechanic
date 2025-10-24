@@ -7,7 +7,6 @@ import { placeholderImages } from '@/lib/images';
 import { Award, ShieldCheck, Heart, Quote } from 'lucide-react';
 import PromoModal from '@/components/promo-modal';
 import ServiceCard, { Service } from '@/components/service-card';
-import ModelViewerContainer from '@/components/model-viewer-container';
 import BriefViewerContainer from '@/components/brief-viewer-container';
 
 const services: Service[] = [
@@ -164,23 +163,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="model-viewer" className="py-20 md:py-28 bg-background overflow-visible">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-headline font-bold">Erkunden Sie unser Meisterstück</h2>
-            <p className="mt-3 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Werfen Sie einen interaktiven 3D-Blick auf den BMW M5.
-            </p>
-          </div>
-          <div className="flex justify-center -mt-24 md:-mt-48 relative z-10 mb-[-12rem]">
-            <ModelViewerContainer />
-          </div>
-        </div>
-      </section>
-
        <section id="testimonials" className="py-20 md:py-28 bg-background">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16 pt-12">
+          <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-headline font-bold">Was unsere Kunden sagen</h2>
             <p className="mt-3 text-lg text-muted-foreground max-w-2xl mx-auto">
               Ihre Zufriedenheit ist unser größter Antrieb.

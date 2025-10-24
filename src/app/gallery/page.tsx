@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { placeholderImages } from "@/lib/images";
+import ModelViewerContainer from "@/components/model-viewer-container";
 
 export default function GalleryPage() {
   const galleryImages = placeholderImages.filter(p => p.id.startsWith("gallery-"));
@@ -13,7 +14,21 @@ export default function GalleryPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <section id="model-viewer" className="py-20 md:py-28 bg-background overflow-visible">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-headline font-bold">Erkunden Sie unser Meisterstück</h2>
+            <p className="mt-3 text-lg text-muted-foreground max-w-2xl mx-auto">
+              Werfen Sie einen interaktiven 3D-Blick auf den BMW M5.
+            </p>
+          </div>
+          <div className="flex justify-center -mt-24 md:-mt-48 relative z-10 mb-[-12rem]">
+            <ModelViewerContainer />
+          </div>
+        </div>
+      </section>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pt-48">
         {galleryImages.map((image, index) => (
           <div key={index} className="relative aspect-square rounded-lg overflow-hidden shadow-lg group">
             <Image
