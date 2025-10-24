@@ -22,7 +22,7 @@ export default function GalleryPage() {
               Werfen Sie einen interaktiven 3D-Blick auf den BMW M5.
             </p>
           </div>
-          <div className="flex justify-center -mt-24 md:-mt-48 relative z-10 mb-[-12rem]">
+          <div className="flex justify-center -mt-12 md:-mt-24 relative z-10 mb-[-12rem]">
             <ModelViewerContainer />
           </div>
         </div>

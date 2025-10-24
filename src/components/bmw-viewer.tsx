@@ -16,7 +16,7 @@ const BmwViewer = () => {
       shadow-intensity="1"
       disable-zoom
       disable-pan
-      style={{ width: '100%', height: '400px' }}
+      style={{ width: '100%', height: '600px' }}
       field-of-view="15deg"
     ></model-viewer>
   );
