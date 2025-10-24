@@ -8,6 +8,7 @@ import { Award, ShieldCheck, Heart, Quote } from 'lucide-react';
 import PromoModal from '@/components/promo-modal';
 import ServiceCard, { Service } from '@/components/service-card';
 import ModelViewerContainer from '@/components/model-viewer-container';
+import BriefViewerContainer from '@/components/brief-viewer-container';
 
 const services: Service[] = [
   {
@@ -157,7 +158,7 @@ export default function Home() {
               ))}
             </div>
             <div className="relative h-80 md:h-full min-h-[400px] rounded-lg overflow-hidden shadow-xl">
-                 {aboutImage && <Image src={aboutImage.imageUrl} alt={aboutImage.description} fill className="object-cover" data-ai-hint={aboutImage.imageHint}/>}
+                 <BriefViewerContainer />
             </div>
           </div>
         </div>
