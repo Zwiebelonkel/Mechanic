@@ -14,41 +14,41 @@ const services: Service[] = [
     icon: 'Wrench',
     title: 'Allgemeine Reparaturen',
     description: 'Von der Motordiagnose bis zur Bremsenreparatur erledigen wir alles mit Präzision und Sorgfalt.',
-    rankings: {
-      Dauer: 4,
-      Preis: 3,
-      Erfahrung: 5,
-    },
+    rankings: [
+      { label: "Komplexität", value: 4 },
+      { label: "Beliebtheit", value: 5 },
+      { label: "Geschwindigkeit", value: 3 },
+    ],
   },
   {
     icon: 'CircleGauge',
     title: 'Geplante Wartung',
     description: 'Halten Sie Ihr Fahrzeug mit unseren umfassenden Wartungsdiensten in Top-Zustand.',
-    rankings: {
-      Dauer: 3,
-      Preis: 4,
-      Erfahrung: 5,
-    },
+    rankings: [
+      { label: "Komplexität", value: 3 },
+      { label: "Beliebtheit", value: 4 },
+      { label: "Geschwindigkeit", value: 4 },
+    ],
   },
   {
     icon: 'Search',
     title: 'Inspektionen & Diagnosen',
     description: 'Modernste Ausrüstung zur Diagnose von Problemen.',
-    rankings: {
-      Dauer: 2,
-      Preis: 4,
-      Erfahrung: 5,
-    },
+    rankings: [
+      { label: "Komplexität", value: 3 },
+      { label: "Beliebtheit", value: 3 },
+      { label: "Geschwindigkeit", value: 5 },
+    ],
   },
   {
     icon: 'Disc',
     title: 'Reifenservice',
     description: 'Reifenmontage, Auswuchten und Achsvermessung für eine reibungslose und sichere Fahrt.',
-    rankings: {
-      Dauer: 1,
-      Preis: 5,
-      Erfahrung: 4,
-    },
+    rankings: [
+       { label: "Komplexität", value: 2 },
+      { label: "Beliebtheit", value: 5 },
+      { label: "Geschwindigkeit", value: 5 },
+    ],
   },
 ];
 
@@ -128,7 +128,7 @@ export default function Home() {
               Wir bieten umfassende Lösungen, um Ihr Fahrzeug in einwandfreiem Zustand zu halten.
             </p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service, index) => (
               <ServiceCard key={index} service={service} />
             ))}

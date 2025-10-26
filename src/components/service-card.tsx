@@ -1,9 +1,9 @@
 
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Wrench, CircleGauge, Search, Disc } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Wrench, CircleGauge, Search, Disc, Star } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const icons = {
   Wrench,
@@ -12,58 +12,57 @@ const icons = {
   Disc,
 };
 
+interface Ranking {
+  label: string;
+  value: number;
+}
+
 export interface Service {
-  icon: 'Wrench' | 'CircleGauge' | 'Search' | 'Disc';
+  icon: keyof typeof icons;
   title: string;
   description: string;
-  rankings: {
-    Dauer: number;
-    Preis: number;
-    Erfahrung: number;
-  };
+  rankings: Ranking[];
 }
+
+const Rating = ({ value, max = 5 }: { value: number; max?: number }) => (
+  <div className="flex items-center gap-1">
+    {Array.from({ length: max }).map((_, i) => (
+      <Star
+        key={i}
+        className={cn(
+          "w-4 h-4",
+          i < value ? "text-primary fill-primary" : "text-muted-foreground/30"
+        )}
+      />
+    ))}
+  </div>
+);
 
 const ServiceCard = ({ service }: { service: Service }) => {
   const Icon = icons[service.icon];
 
   return (
-    <div className="flip-card">
-      <div className="flip-card-inner">
-        <div className="flip-card-front">
-          <Card className="bg-card border-border hover:border-primary transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20 w-full flex flex-col justify-center items-center p-4 h-full">
-            <CardHeader className="items-center text-center p-0 mb-3">
-              <div className="p-3 bg-primary/10 rounded-full mb-3 ring-4 ring-primary/5">
-                <Icon className="w-8 h-8 text-primary drop-shadow-[0_0_8px_hsl(var(--primary))]" />
+    <Card className="flex flex-col h-full bg-card border-border transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20">
+      <CardHeader className="items-center text-center pb-4">
+        <div className="p-4 bg-primary/10 rounded-full mb-4 ring-4 ring-primary/5">
+          <Icon className="w-10 h-10 text-primary" />
+        </div>
+        <CardTitle className="font-headline text-xl">{service.title}</CardTitle>
+      </CardHeader>
+      <CardContent className="text-center text-muted-foreground text-sm flex-grow">
+        <p>{service.description}</p>
+      </CardContent>
+      <CardFooter className="flex-col items-start p-4 pt-0 mt-4">
+         <div className="w-full space-y-3">
+            {service.rankings.map((ranking) => (
+              <div key={ranking.label} className="flex justify-between items-center text-xs">
+                <span className="font-medium text-muted-foreground">{ranking.label}</span>
+                <Rating value={ranking.value} />
               </div>
-              <CardTitle className="font-headline text-lg sm:text-lg lg:text-xl">{service.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="text-center text-muted-foreground p-0">
-              <p className="hidden lg:block text-sm">{service.description}</p>
-            </CardContent>
-          </Card>
+            ))}
         </div>
-        <div className="flip-card-back">
-          <Card className="bg-card border-primary w-full flex flex-col justify-center items-center p-4 h-full">
-            <CardHeader className="p-0 mb-4">
-              <CardTitle className="font-headline text-lg sm:text-xl">{service.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="w-full p-0">
-              <ul className="space-y-4">
-                {Object.entries(service.rankings).map(([key, value]) => (
-                  <li key={key} className="text-sm">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="font-semibold mr-2">{key}</span>
-                      <span className="text-xs text-muted-foreground">{value}/5</span>
-                    </div>
-                    <Progress value={(value / 5) * 100} className="h-2" />
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };
 
