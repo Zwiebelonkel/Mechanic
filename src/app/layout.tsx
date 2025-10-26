@@ -22,6 +22,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
 import { ThemeProvider } from '@/components/theme-provider';
 import { ThemeToggle } from '@/components/theme-toggle';
+import Script from 'next/script';
 
 const rubik = Rubik({ subsets: ['latin'], variable: '--font-body' });
 const oswald = Oswald({ subsets: ['latin'], variable: '--font-headline', weight: ['400', '700'] });
@@ -40,8 +41,19 @@ export default function RootLayout({
     <html lang="de" className="dark" suppressHydrationWarning>
       <head>
         <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+        
       </head>
       <body className={`${rubik.variable} ${oswald.variable} font-body antialiased`}>
+        <Script async src="https://www.googletagmanager.com/gtag/js?id=G-QBW0VKTCNQ"></Script>
+        <Script id="google-analytics">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-QBW0VKTCNQ');
+          `}
+        </Script>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
