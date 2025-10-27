@@ -1,9 +1,8 @@
 
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Wrench, CircleGauge, Search, Disc, Star } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Wrench, CircleGauge, Search, Disc } from 'lucide-react';
 
 const icons = {
   Wrench,
@@ -12,31 +11,11 @@ const icons = {
   Disc,
 };
 
-interface Ranking {
-  label: string;
-  value: number;
-}
-
 export interface Service {
   icon: keyof typeof icons;
   title: string;
   description: string;
-  rankings: Ranking[];
 }
-
-const Rating = ({ value, max = 5 }: { value: number; max?: number }) => (
-  <div className="flex items-center gap-1">
-    {Array.from({ length: max }).map((_, i) => (
-      <Star
-        key={i}
-        className={cn(
-          "w-4 h-4",
-          i < value ? "text-primary fill-primary" : "text-muted-foreground/30"
-        )}
-      />
-    ))}
-  </div>
-);
 
 const ServiceCard = ({ service }: { service: Service }) => {
   const Icon = icons[service.icon];
@@ -49,19 +28,9 @@ const ServiceCard = ({ service }: { service: Service }) => {
         </div>
         <CardTitle className="font-headline text-xl">{service.title}</CardTitle>
       </CardHeader>
-      <CardContent className="text-center text-muted-foreground text-sm flex-grow">
+      <CardContent className="text-center text-muted-foreground text-sm flex-grow pb-6">
         <p>{service.description}</p>
       </CardContent>
-      <CardFooter className="flex-col items-start p-4 pt-0 mt-4">
-         <div className="w-full space-y-3">
-            {service.rankings.map((ranking) => (
-              <div key={ranking.label} className="flex justify-between items-center text-xs">
-                <span className="font-medium text-muted-foreground">{ranking.label}</span>
-                <Rating value={ranking.value} />
-              </div>
-            ))}
-        </div>
-      </CardFooter>
     </Card>
   );
 };

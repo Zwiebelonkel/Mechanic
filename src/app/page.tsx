@@ -14,41 +14,21 @@ const services: Service[] = [
     icon: 'Wrench',
     title: 'Allgemeine Reparaturen',
     description: 'Von der Motordiagnose bis zur Bremsenreparatur erledigen wir alles mit Präzision und Sorgfalt.',
-    rankings: [
-      { label: "Komplexität", value: 4 },
-      { label: "Beliebtheit", value: 5 },
-      { label: "Geschwindigkeit", value: 3 },
-    ],
   },
   {
     icon: 'CircleGauge',
     title: 'Geplante Wartung',
     description: 'Halten Sie Ihr Fahrzeug mit unseren umfassenden Wartungsdiensten in Top-Zustand.',
-    rankings: [
-      { label: "Komplexität", value: 3 },
-      { label: "Beliebtheit", value: 4 },
-      { label: "Geschwindigkeit", value: 4 },
-    ],
   },
   {
     icon: 'Search',
     title: 'Inspektionen & Diagnosen',
     description: 'Modernste Ausrüstung zur Diagnose von Problemen.',
-    rankings: [
-      { label: "Komplexität", value: 3 },
-      { label: "Beliebtheit", value: 3 },
-      { label: "Geschwindigkeit", value: 5 },
-    ],
   },
   {
     icon: 'Disc',
     title: 'Reifenservice',
     description: 'Reifenmontage, Auswuchten und Achsvermessung für eine reibungslose und sichere Fahrt.',
-    rankings: [
-       { label: "Komplexität", value: 2 },
-      { label: "Beliebtheit", value: 5 },
-      { label: "Geschwindigkeit", value: 5 },
-    ],
   },
 ];
 
