@@ -156,7 +156,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {testimonials.map((testimonial, index) => (
-              <TiltCard key={index}>
+              <TiltCard key={index} className="transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20">
                 <Card className="bg-card border-border p-6 h-full hover:border-primary transition-colors duration-300">
                   <CardContent className="p-0">
                     <div className="flex items-start gap-4">
