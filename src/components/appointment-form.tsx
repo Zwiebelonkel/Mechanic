@@ -65,7 +65,7 @@ export default function AppointmentForm() {
   const { toast } = useToast();
 
   useEffect(() => {
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/calendar/events`;
+    const apiUrl = `https://mechanicbackend-bwey.onrender.com/api/calendar/events`;
 
     fetch(apiUrl)
       .then((res) => res.json())
