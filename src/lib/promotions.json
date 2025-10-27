@@ -1,0 +1,63 @@
+
+[
+  {
+    "month": 1,
+    "title": "Gratis Winter-Check",
+    "description": "Starten Sie sicher ins neue Jahr! Wir prüfen Frostschutz, Batterie und Beleuchtung kostenlos."
+  },
+  {
+    "month": 2,
+    "title": "15% Rabatt auf Bremsenservice",
+    "description": "Sicherheit im Fokus: Erhalten Sie diesen Monat 15% Nachlass auf alle Bremsenarbeiten."
+  },
+  {
+    "month": 3,
+    "title": "Kostenloser Frühlings-Check",
+    "description": "Machen Sie Ihr Auto fit für den Frühling! Wir prüfen Reifen und Flüssigkeitsstände für Sie."
+  },
+  {
+    "month": 4,
+    "title": "20% auf Klimaanlagen-Service",
+    "description": "Sorgen Sie für frische Luft! Klimaanlagen-Wartung und Desinfektion jetzt zum Sonderpreis."
+  },
+  {
+    "month": 5,
+    "title": "Räderwechsel-Wochen",
+    "description": "Zeit für Sommerreifen! Buchen Sie Ihren Termin zum Räderwechsel für nur 24,99 €."
+  },
+  {
+    "month": 6,
+    "title": "Urlaubs-Check für 19,99 €",
+    "description": "Fahren Sie sorgenfrei in den Urlaub. Unser umfassender Urlaubs-Check für Ihre Sicherheit."
+  },
+  {
+    "month": 7,
+    "title": "10% auf alle Ölwechsel",
+    "description": "Gönnen Sie Ihrem Motor was Gutes. Diesen Monat erhalten Sie 10% Rabatt auf den kompletten Ölwechsel-Service."
+  },
+  {
+    "month": 8,
+    "title": "Kostenlose Stoßdämpfer-Prüfung",
+    "description": "Für eine stabile Straßenlage: Lassen Sie Ihre Stoßdämpfer von uns kostenlos überprüfen."
+  },
+  {
+    "month": 9,
+    "title": "Lichttest-Wochen",
+    "description": "Sehen und gesehen werden! Wir prüfen und justieren Ihre gesamte Beleuchtungsanlage kostenlos."
+  },
+  {
+    "month": 10,
+    "title": "Räderwechsel-Wochen",
+    "description": "Zeit für Winterreifen! Buchen Sie Ihren Termin zum Räderwechsel für nur 24,99 €."
+  },
+  {
+    "month": 11,
+    "title": "Batterie-Check für 0 €",
+    "description": "Starten Sie auch bei Kälte zuverlässig. Wir prüfen die Leistung Ihrer Batterie kostenlos."
+  },
+  {
+    "month": 12,
+    "title": "Weihnachts-Rabatt",
+    "description": "Als Dankeschön für Ihre Treue erhalten Sie 10% Rabatt auf alle Reparaturen in diesem Monat."
+  }
+]
