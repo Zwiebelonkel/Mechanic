@@ -8,6 +8,7 @@ import { Award, ShieldCheck, Heart, Quote } from 'lucide-react';
 import PromoModal from '@/components/promo-modal';
 import ServiceCard, { Service } from '@/components/service-card';
 import BriefViewerContainer from '@/components/brief-viewer-container';
+import TiltCard from '@/components/tilt-card';
 
 const services: Service[] = [
   {
@@ -110,7 +111,9 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service, index) => (
-              <ServiceCard key={index} service={service} />
+              <TiltCard key={index}>
+                <ServiceCard service={service} />
+              </TiltCard>
             ))}
           </div>
         </div>
