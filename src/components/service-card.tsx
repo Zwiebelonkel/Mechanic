@@ -21,7 +21,7 @@ const ServiceCard = ({ service }: { service: Service }) => {
   const Icon = icons[service.icon];
 
   return (
-    <Card className="flex flex-col h-full bg-card border-border transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20">
+    <Card className="flex flex-col h-full bg-card border-border transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20 hover:border-primary">
       <CardHeader className="items-center text-center pb-4">
         <div className="p-4 bg-primary/10 rounded-full mb-4 ring-4 ring-primary/5">
           <Icon className="w-10 h-10 text-primary" />

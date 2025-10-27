@@ -157,7 +157,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {testimonials.map((testimonial, index) => (
               <TiltCard key={index}>
-                <Card className="bg-card border-border p-6 h-full">
+                <Card className="bg-card border-border p-6 h-full hover:border-primary transition-colors duration-300">
                   <CardContent className="p-0">
                     <div className="flex items-start gap-4">
                       <div className="w-16 h-16 rounded-full overflow-hidden relative flex-shrink-0">
