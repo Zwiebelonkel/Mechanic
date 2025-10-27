@@ -1,6 +1,39 @@
-import { Mail, MapPin, Phone } from 'lucide-react';
+"use client";
+
+import { Mail, MapPin, Phone, Check } from 'lucide-react';
+import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
+
+type CopyState = "phone" | "email" | "address" | null;
 
 export default function Footer() {
+  const { toast } = useToast();
+  const [copied, setCopied] = useState<CopyState>(null);
+
+  const contactInfo = {
+    phone: "+49 421 1234567",
+    email: "info@automeisterei-seibel.de",
+    address: "Pürschweg 22, 28757 Bremen"
+  };
+
+  const copyToClipboard = (text: string, type: CopyState, label: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast({
+        title: `${label} kopiert!`,
+        description: `Die ${label.toLowerCase()} wurde in Ihre Zwischenablage kopiert.`,
+      });
+      setCopied(type);
+      setTimeout(() => setCopied(null), 2000); // Reset after 2 seconds
+    }, (err) => {
+      toast({
+        variant: "destructive",
+        title: "Fehler beim Kopieren",
+        description: "Der Text konnte nicht kopiert werden.",
+      });
+      console.error('Could not copy text: ', err);
+    });
+  };
+
   return (
     <footer
       id="contact"
@@ -14,22 +47,31 @@ export default function Footer() {
 
           <div className="flex flex-col md:flex-row md:space-x-12 space-y-6 md:space-y-0 text-muted-foreground text-lg">
             {/* Telefon */}
-            <div className="flex items-center justify-center gap-3 hover:text-primary transition-colors">
-              <Phone className="h-6 w-6" />
-              <span>+49 421 1234567</span>
-            </div>
+            <button
+              onClick={() => copyToClipboard(contactInfo.phone, "phone", "Telefonnummer")}
+              className="flex items-center justify-center gap-3 hover:text-primary transition-colors cursor-pointer"
+            >
+              {copied === 'phone' ? <Check className="h-6 w-6 text-green-500" /> : <Phone className="h-6 w-6" />}
+              <span>{contactInfo.phone}</span>
+            </button>
 
             {/* E-Mail */}
-            <div className="flex items-center justify-center gap-3 hover:text-primary transition-colors">
-              <Mail className="h-6 w-6" />
-              <span>info@automeisterei-seibel.de</span>
-            </div>
+            <button
+              onClick={() => copyToClipboard(contactInfo.email, "email", "E-Mail-Adresse")}
+              className="flex items-center justify-center gap-3 hover:text-primary transition-colors cursor-pointer"
+            >
+              {copied === 'email' ? <Check className="h-6 w-6 text-green-500" /> : <Mail className="h-6 w-6" />}
+              <span>{contactInfo.email}</span>
+            </button>
 
             {/* Adresse */}
-            <div className="flex items-center justify-center gap-3 hover:text-primary transition-colors">
-              <MapPin className="h-6 w-6" />
-              <span>Pürschweg 22, 28757 Bremen</span>
-            </div>
+            <button
+              onClick={() => copyToClipboard(contactInfo.address, "address", "Adresse")}
+              className="flex items-center justify-center gap-3 hover:text-primary transition-colors cursor-pointer"
+            >
+              {copied === 'address' ? <Check className="h-6 w-6 text-green-500" /> : <MapPin className="h-6 w-6" />}
+              <span>{contactInfo.address}</span>
+            </button>
           </div>
         </div>
 
