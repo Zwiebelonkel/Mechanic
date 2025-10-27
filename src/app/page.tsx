@@ -156,20 +156,22 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {testimonials.map((testimonial, index) => (
-              <Card key={index} className="bg-card border-border p-6">
-                <CardContent className="p-0">
-                  <div className="flex items-start gap-4">
-                    <div className="w-16 h-16 rounded-full overflow-hidden relative flex-shrink-0">
-                      {testimonial.image && <Image src={testimonial.image.imageUrl} alt={`Kunde ${testimonial.name}`} fill className="object-cover" data-ai-hint={testimonial.image.imageHint} />}
+              <TiltCard key={index}>
+                <Card className="bg-card border-border p-6 h-full">
+                  <CardContent className="p-0">
+                    <div className="flex items-start gap-4">
+                      <div className="w-16 h-16 rounded-full overflow-hidden relative flex-shrink-0">
+                        {testimonial.image && <Image src={testimonial.image.imageUrl} alt={`Kunde ${testimonial.name}`} fill className="object-cover" data-ai-hint={testimonial.image.imageHint} />}
+                      </div>
+                      <div className="flex-1">
+                        <Quote className="w-8 h-8 text-primary/30 mb-2" />
+                        <p className="text-muted-foreground mb-4 italic">"{testimonial.text}"</p>
+                        <p className="font-bold font-headline text-right">- {testimonial.name}</p>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <Quote className="w-8 h-8 text-primary/30 mb-2" />
-                      <p className="text-muted-foreground mb-4 italic">"{testimonial.text}"</p>
-                      <p className="font-bold font-headline text-right">- {testimonial.name}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </TiltCard>
             ))}
           </div>
         </div>
