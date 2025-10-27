@@ -74,7 +74,7 @@ export default function RootLayout({
                   </div>
                 </div>
               </SidebarHeader>
-              <SidebarContent>
+              <SidebarContent className="flex flex-col justify-between">
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton asChild tooltip={{ children: 'Startseite' }}>
@@ -132,6 +132,8 @@ export default function RootLayout({
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
+                </SidebarMenu>
+                 <SidebarMenu>
                    <SidebarMenuItem>
                     <SidebarMenuButton asChild tooltip={{ children: 'Admin' }}>
                       <Link href="/admin">
