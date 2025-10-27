@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/sidebar';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Home, Wrench, Info, Calendar, GalleryHorizontal, BookOpen, MapPin } from 'lucide-react';
+import { Home, Wrench, Info, Calendar, GalleryHorizontal, BookOpen, MapPin, UserCog } from 'lucide-react';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
@@ -129,6 +129,14 @@ export default function RootLayout({
                       <Link href="/appointments">
                         <Calendar />
                         <span>Termin Buchen</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                   <SidebarMenuItem>
+                    <SidebarMenuButton asChild tooltip={{ children: 'Admin' }}>
+                      <Link href="/admin">
+                        <UserCog />
+                        <span>Admin</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
