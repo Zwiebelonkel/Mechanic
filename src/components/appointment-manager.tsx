@@ -124,16 +124,15 @@ export default function AppointmentManager() {
   
   // Extracts customer name and email from description
   const parseDescription = (desc: string) => {
-    const nameMatch = desc.match(/Kunde:\s*(.*)/);
-    const emailMatch = desc.match(/E-Mail:\s*(.*)/);
-    const phoneMatch = desc.match(/Telefon:\s*(.*)/);
-    const serviceMatch = desc.match(/Werkstatt:\s*(.*)/);
+    const safeDesc = desc || "";
+    const nameMatch = safeDesc.match(/Kunde:\s*(.*)/);
+    const emailMatch = safeDesc.match(/E-Mail:\s*(.*)/);
+    const phoneMatch = safeDesc.match(/Telefon:\s*(.*)/);
 
     return {
         name: nameMatch ? nameMatch[1].split('\n')[0].trim() : 'N/A',
         email: emailMatch ? emailMatch[1].split('\n')[0].trim() : 'N/A',
         phone: phoneMatch ? phoneMatch[1].split('\n')[0].trim() : 'N/A',
-        service: serviceMatch ? serviceMatch[1].split('–')[0].trim() : (desc.split('–')[0] || "Service"),
     };
   }
 
@@ -199,7 +198,7 @@ export default function AppointmentManager() {
                      <span className="text-muted-foreground text-xs">{phone}</span>
                   </div>
                 </TableCell>
-                <TableCell>{apt.summary.split('–')[0]?.replace('Werkstatt: ','') || 'Service'}</TableCell>
+                <TableCell>{(apt.summary || '').split('–')[0]?.replace('Werkstatt: ','') || 'Service'}</TableCell>
                 <TableCell>
                   <Badge variant={displayStatus.variant}>{displayStatus.text}</Badge>
                 </TableCell>
