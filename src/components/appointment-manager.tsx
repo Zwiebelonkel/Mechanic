@@ -10,42 +10,44 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, RefreshCw, Check, X } from "lucide-react";
+import { Loader2, RefreshCw, Check, X, Ban, ThumbsUp } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
-type AppointmentStatus = "pending" | "confirmed" | "cancelled";
+// Google Calendar response statuses
+type GCalStatus = "accepted" | "declined" | "tentative" | "needsAction";
 
 interface Appointment {
-  _id: string;
-  name: string;
-  email: string;
-  phone: string;
-  service: string;
+  id: string;
+  summary: string;
+  description: string;
   start_iso: string;
   end_iso: string;
-  status: AppointmentStatus;
+  status: GCalStatus;
+  attendees: { email: string; responseStatus: GCalStatus }[];
 }
+
+// Helper to map GCal status to our desired display status and style
+const statusMap: Record<
+  GCalStatus,
+  { text: string; variant: "default" | "destructive" | "secondary"; icon: React.ElementType }
+> = {
+  accepted: { text: "Bestätigt", variant: "default", icon: ThumbsUp },
+  declined: { text: "Abgelehnt", variant: "destructive", icon: Ban },
+  tentative: { text: "Ausstehend", variant: "secondary", icon: Loader2 },
+  needsAction: { text: "Ausstehend", variant: "secondary", icon: Loader2 },
+};
 
 export default function AppointmentManager() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
   const { toast } = useToast();
-  const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://mechanicbackend-bwey.onrender.com"}/api/appointments`;
+  const API_URL = `${
+    process.env.NEXT_PUBLIC_API_URL || "https://mechanicbackend-bwey.onrender.com"
+  }/api/appointments`;
 
   const fetchAppointments = useCallback(async () => {
     setIsLoading(true);
@@ -53,14 +55,16 @@ export default function AppointmentManager() {
       const res = await fetch(API_URL);
       if (!res.ok) throw new Error("Fehler beim Laden der Termine.");
       const data = await res.json();
-      
-      const appointmentData = Array.isArray(data.appointments) ? data.appointments : Array.isArray(data) ? data : [];
-      const sortedAppointments = appointmentData.sort(
+
+      if (!data.success || !Array.isArray(data.events)) {
+         throw new Error(data.message || "Ungültige Antwort vom Server.");
+      }
+
+      const sortedAppointments = data.events.sort(
         (a: Appointment, b: Appointment) =>
           new Date(a.start_iso).getTime() - new Date(b.start_iso).getTime()
       );
       setAppointments(sortedAppointments);
-
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -79,12 +83,12 @@ export default function AppointmentManager() {
 
   const handleUpdateStatus = async (
     id: string,
-    status: AppointmentStatus
+    status: "accepted" | "declined"
   ) => {
     setIsUpdating(id);
     try {
       const res = await fetch(`${API_URL}/${id}/status`, {
-        method: "PUT",
+        method: "PATCH", // Use PATCH as defined in the backend
         headers: {
           "Content-Type": "application/json",
         },
@@ -102,10 +106,11 @@ export default function AppointmentManager() {
       toast({
         title: "Erfolg!",
         description: `Der Termin wurde erfolgreich ${
-          status === "confirmed" ? "bestätigt" : "abgelehnt"
+          status === "accepted" ? "bestätigt" : "abgelehnt"
         }.`,
       });
-      fetchAppointments();
+      // Re-fetch appointments to show the latest status
+      await fetchAppointments();
     } catch (error: any) {
       toast({
         variant: "destructive",
@@ -116,41 +121,31 @@ export default function AppointmentManager() {
       setIsUpdating(null);
     }
   };
+  
+  // Extracts customer name and email from description
+  const parseDescription = (desc: string) => {
+    const nameMatch = desc.match(/Kunde:\s*(.*)/);
+    const emailMatch = desc.match(/E-Mail:\s*(.*)/);
+    const phoneMatch = desc.match(/Telefon:\s*(.*)/);
+    const serviceMatch = desc.match(/Werkstatt:\s*(.*)/);
+
+    return {
+        name: nameMatch ? nameMatch[1].split('\n')[0].trim() : 'N/A',
+        email: emailMatch ? emailMatch[1].split('\n')[0].trim() : 'N/A',
+        phone: phoneMatch ? phoneMatch[1].split('\n')[0].trim() : 'N/A',
+        service: serviceMatch ? serviceMatch[1].split('–')[0].trim() : (desc.split('–')[0] || "Service"),
+    };
+  }
+
 
   const formatDate = (isoString: string) => {
+    if (!isoString) return "Ungültiges Datum";
     const date = new Date(isoString);
     return date.toLocaleString("de-DE", {
       dateStyle: "medium",
       timeStyle: "short",
     });
   };
-
-  const statusVariant = (status: AppointmentStatus) => {
-    switch (status) {
-      case "confirmed":
-        return "default";
-      case "pending":
-        return "secondary";
-      case "cancelled":
-        return "destructive";
-      default:
-        return "outline";
-    }
-  };
-    
-  const statusText = (status: AppointmentStatus) => {
-    switch (status) {
-      case "confirmed":
-        return "Bestätigt";
-      case "pending":
-        return "Ausstehend";
-      case "cancelled":
-        return "Abgelehnt";
-      default:
-        return "Unbekannt";
-    }
-  };
-
 
   if (isLoading && appointments.length === 0) {
     return (
@@ -171,7 +166,7 @@ export default function AppointmentManager() {
           disabled={isLoading}
         >
           <RefreshCw
-            className={`w-4 h-4 mr-2 ${isLoading ? "animate-spin" : ""}`}
+            className={cn("w-4 h-4 mr-2", isLoading && "animate-spin")}
           />
           Aktualisieren
         </Button>
@@ -181,7 +176,6 @@ export default function AppointmentManager() {
           <TableRow>
             <TableHead>Datum & Uhrzeit</TableHead>
             <TableHead>Kunde</TableHead>
-            <TableHead>Kontakt</TableHead>
             <TableHead>Anliegen</TableHead>
             <TableHead>Status</TableHead>
             <TableHead className="text-right">Aktionen</TableHead>
@@ -189,40 +183,46 @@ export default function AppointmentManager() {
         </TableHeader>
         <TableBody>
           {appointments.length > 0 ? (
-            appointments.map((apt) => (
-              <TableRow key={apt._id}>
+            appointments.map((apt) => {
+              const { name, email, phone } = parseDescription(apt.summary || apt.description);
+              const displayStatus = statusMap[apt.status] || statusMap.needsAction;
+
+              return (
+              <TableRow key={apt.id}>
                 <TableCell className="font-medium">
                   {formatDate(apt.start_iso)}
                 </TableCell>
-                <TableCell>{apt.name}</TableCell>
                 <TableCell>
                   <div className="flex flex-col">
-                    <span>{apt.email}</span>
-                    <span className="text-muted-foreground">{apt.phone}</span>
+                    <span className="font-semibold">{name}</span>
+                    <span className="text-muted-foreground text-sm">{email}</span>
+                     <span className="text-muted-foreground text-xs">{phone}</span>
                   </div>
                 </TableCell>
-                <TableCell>{apt.service}</TableCell>
+                <TableCell>{apt.summary.split('–')[0]?.replace('Werkstatt: ','') || 'Service'}</TableCell>
                 <TableCell>
-                  <Badge variant={statusVariant(apt.status)}>{statusText(apt.status)}</Badge>
+                  <Badge variant={displayStatus.variant}>{displayStatus.text}</Badge>
                 </TableCell>
                 <TableCell className="text-right">
-                  {isUpdating === apt._id ? (
+                  {isUpdating === apt.id ? (
                     <Loader2 className="w-4 h-4 animate-spin ml-auto" />
                   ) : (
                     <div className="flex gap-2 justify-end">
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => handleUpdateStatus(apt._id, "confirmed")}
-                        disabled={apt.status === "confirmed"}
+                        onClick={() => handleUpdateStatus(apt.id, "accepted")}
+                        disabled={apt.status === "accepted"}
+                        title="Bestätigen"
                       >
                         <Check className="w-4 h-4 text-green-500" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => handleUpdateStatus(apt._id, "cancelled")}
-                         disabled={apt.status === "cancelled"}
+                        onClick={() => handleUpdateStatus(apt.id, "declined")}
+                        disabled={apt.status === "declined"}
+                        title="Ablehnen"
                       >
                         <X className="w-4 h-4 text-destructive" />
                       </Button>
@@ -230,7 +230,7 @@ export default function AppointmentManager() {
                   )}
                 </TableCell>
               </TableRow>
-            ))
+            )})
           ) : (
             <TableRow>
               <TableCell colSpan={6} className="h-24 text-center">
