@@ -1,3 +1,6 @@
+
+"use server";
+
 import { z } from "zod";
 import { de } from "date-fns/locale";
 import { format } from "date-fns";
@@ -28,16 +31,17 @@ export type AppointmentData = z.infer<typeof appointmentSchema>;
 // This async function is correct
 export async function scheduleAppointment(data: AppointmentData) {
   const API_URL = "https://mechanicbackend-bwey.onrender.com/api/appointments";
-  // const API_URL = "http://localhost:3000/api/appointments";
 
   try {
     console.log("📤 Sende Terminanfrage an Backend:", data);
 
-    // Start- und Endzeit im ISO-Format (Termin dauert 1 Stunde)
     const start = new Date(
       `${format(data.date, "yyyy-MM-dd")}T${data.time}:00`
     );
     const end = new Date(start.getTime() + 60 * 60 * 1000);
+
+    // Kundendaten in die Notizen packen, um den Google-API-Fehler zu umgehen.
+    const notes = `Kunde: ${data.name}\nE-Mail: ${data.email}\nTelefon: ${data.phone}`;
 
     const body = {
       name: data.name,
@@ -46,7 +50,7 @@ export async function scheduleAppointment(data: AppointmentData) {
       service: `Anfrage: ${data.issue}`, // Mark as a request
       start_iso: start.toISOString(),
       end_iso: end.toISOString(),
-      notes: "",
+      notes: notes, // Hier werden die Kundendaten übergeben
     };
 
     const res = await fetch(API_URL, {
