@@ -183,8 +183,9 @@ export default function AppointmentManager() {
         <TableBody>
           {appointments.length > 0 ? (
             appointments.map((apt) => {
-              const { name, email, phone } = parseDescription(apt.summary || apt.description);
+              const { name, email, phone } = parseDescription(apt.description);
               const displayStatus = statusMap[apt.status] || statusMap.needsAction;
+              const service = (apt.summary || '').split('–')[0]?.replace('Werkstatt: ','').trim() || 'Service';
 
               return (
               <TableRow key={apt.id}>
@@ -198,7 +199,7 @@ export default function AppointmentManager() {
                      <span className="text-muted-foreground text-xs">{phone}</span>
                   </div>
                 </TableCell>
-                <TableCell>{(apt.summary || '').split('–')[0]?.replace('Werkstatt: ','') || 'Service'}</TableCell>
+                <TableCell>{service}</TableCell>
                 <TableCell>
                   <Badge variant={displayStatus.variant}>{displayStatus.text}</Badge>
                 </TableCell>
