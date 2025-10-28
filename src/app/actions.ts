@@ -1,6 +1,5 @@
 
-"use server";
-
+'use server';
 import { z } from "zod";
 import { de } from "date-fns/locale";
 import { format } from "date-fns";
@@ -40,14 +39,19 @@ export async function scheduleAppointment(data: AppointmentData) {
     );
     const end = new Date(start.getTime() + 60 * 60 * 1000);
 
+    // Pack customer details into notes to avoid the attendee invitation error
+    const customerNotes = `Kunde: ${data.name}\nE-Mail: ${data.email}\nTelefon: ${data.phone}`;
+
     const body = {
       name: data.name,
-      email: data.email,
+      // Send shop email to avoid inviting the customer, which causes an error.
+      // The backend will use this, but since it's the calendar owner, no invite is sent.
+      email: "info@automeisterei-seibel.de", 
       phone: data.phone,
-      service: `Werkstatt: ${data.issue}`,
+      service: `Anfrage: ${data.issue}`, // Mark as a request
       start_iso: start.toISOString(),
       end_iso: end.toISOString(),
-      notes: `Kundenanfrage bezüglich: ${data.issue}`,
+      notes: customerNotes, // Pass all customer info in the notes field
     };
 
     const res = await fetch(API_URL, {
@@ -72,7 +76,7 @@ export async function scheduleAppointment(data: AppointmentData) {
       success: true,
       message: `✅ Terminanfrage erhalten für den ${format(data.date, "PPP", {
         locale: de,
-      })} um ${data.time}. Sie erhalten in Kürze eine Bestätigung und eine Kalendereinladung.`,
+      })} um ${data.time}. Wir prüfen die Verfügbarkeit und senden Ihnen eine separate Bestätigung.`,
     };
   } catch (error: any) {
     console.error("⚠️ Netzwerkfehler:", error);
