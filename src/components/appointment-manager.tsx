@@ -40,13 +40,12 @@ interface Appointment {
   status: AppointmentStatus;
 }
 
-const API_URL = "https://mechanicbackend-bwey.onrender.com/api/appointments";
-
 export default function AppointmentManager() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
   const { toast } = useToast();
+  const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://mechanicbackend-bwey.onrender.com"}/api/appointments`;
 
   const fetchAppointments = useCallback(async () => {
     setIsLoading(true);
@@ -54,21 +53,25 @@ export default function AppointmentManager() {
       const res = await fetch(API_URL);
       if (!res.ok) throw new Error("Fehler beim Laden der Termine.");
       const data = await res.json();
-      const sortedAppointments = data.sort(
+      
+      const appointmentData = Array.isArray(data.appointments) ? data.appointments : Array.isArray(data) ? data : [];
+      const sortedAppointments = appointmentData.sort(
         (a: Appointment, b: Appointment) =>
           new Date(a.start_iso).getTime() - new Date(b.start_iso).getTime()
       );
       setAppointments(sortedAppointments);
+
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Fehler",
         description: error.message || "Termine konnten nicht geladen werden.",
       });
+      setAppointments([]); // Bei Fehler leeres Array setzen
     } finally {
       setIsLoading(false);
     }
-  }, [toast]);
+  }, [toast, API_URL]);
 
   useEffect(() => {
     fetchAppointments();
