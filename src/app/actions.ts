@@ -31,7 +31,7 @@ export async function scheduleAppointment(data: AppointmentData) {
   // const API_URL = "http://localhost:3000/api/appointments";
 
   try {
-    console.log("📤 Sende Termin an Backend:", data);
+    console.log("📤 Sende Terminanfrage an Backend:", data);
 
     // Start- und Endzeit im ISO-Format (Termin dauert 1 Stunde)
     const start = new Date(
@@ -43,7 +43,7 @@ export async function scheduleAppointment(data: AppointmentData) {
       name: data.name,
       email: data.email,
       phone: data.phone,
-      service: data.issue,
+      service: `Anfrage: ${data.issue}`, // Mark as a request
       start_iso: start.toISOString(),
       end_iso: end.toISOString(),
       notes: "",
@@ -57,21 +57,21 @@ export async function scheduleAppointment(data: AppointmentData) {
 
     const result = await res.json();
 
-    if (!res.ok || !result.success) {
+    if (!res.ok || result.error) {
       console.error("❌ Backend-Fehler:", result);
       return {
         success: false,
         message:
           result.error ||
-          "Terminvereinbarung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+          "Terminanfrage fehlgeschlagen. Bitte versuchen Sie es erneut.",
       };
     }
 
     return {
       success: true,
-      message: `✅ Termin bestätigt für ${format(data.date, "PPP", {
+      message: `✅ Terminanfrage erhalten für den ${format(data.date, "PPP", {
         locale: de,
-      })} um ${data.time}. Eine Bestätigung wurde an ${data.email} gesendet.`,
+      })} um ${data.time}. Wir prüfen die Verfügbarkeit und senden Ihnen eine separate Bestätigung.`,
     };
   } catch (error: any) {
     console.error("⚠️ Netzwerkfehler:", error);

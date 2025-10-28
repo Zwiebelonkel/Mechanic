@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, RefreshCw, Check, X, Ban, ThumbsUp } from "lucide-react";
+import { Loader2, RefreshCw, Check, X, Ban, ThumbsUp, HelpCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
@@ -36,8 +36,8 @@ const statusMap: Record<
 > = {
   accepted: { text: "Bestätigt", variant: "default", icon: ThumbsUp },
   declined: { text: "Abgelehnt", variant: "destructive", icon: Ban },
-  tentative: { text: "Ausstehend", variant: "secondary", icon: Loader2 },
-  needsAction: { text: "Ausstehend", variant: "secondary", icon: Loader2 },
+  tentative: { text: "Anfrage", variant: "secondary", icon: HelpCircle },
+  needsAction: { text: "Anfrage", variant: "secondary", icon: HelpCircle },
 };
 
 export default function AppointmentManager() {
@@ -81,47 +81,71 @@ export default function AppointmentManager() {
     fetchAppointments();
   }, [fetchAppointments]);
 
-  const handleUpdateStatus = async (
-    id: string,
-    status: "accepted" | "declined"
-  ) => {
-    setIsUpdating(id);
+  const handleConfirm = async (apt: Appointment) => {
+    setIsUpdating(apt.id);
     try {
-      const res = await fetch(`${API_URL}/${id}/status`, {
-        method: "PATCH", // Use PATCH as defined in the backend
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ status }),
+      // 1. Update status to 'accepted'
+      const statusRes = await fetch(`${API_URL}/${apt.id}/status`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "accepted" }),
       });
+      if (!statusRes.ok) throw new Error("Status konnte nicht aktualisiert werden.");
 
-      const result = await res.json();
-
-      if (!res.ok || !result.success) {
-        throw new Error(
-          result.message || "Terminstatus konnte nicht aktualisiert werden."
-        );
-      }
+      // 2. Update summary to remove "Anfrage:"
+      const newSummary = apt.summary.replace(/^Anfrage:\s*/, "");
+      const summaryRes = await fetch(`${API_URL}/${apt.id}/summary`, {
+          method: 'PATCH',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ summary: newSummary }),
+      });
+      if (!summaryRes.ok) throw new Error("Titel konnte nicht aktualisiert werden.");
 
       toast({
         title: "Erfolg!",
-        description: `Der Termin wurde erfolgreich ${
-          status === "accepted" ? "bestätigt" : "abgelehnt"
-        }.`,
+        description: `Der Termin wurde erfolgreich bestätigt.`,
       });
-      // Re-fetch appointments to show the latest status
       await fetchAppointments();
     } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Fehler beim Aktualisieren",
+        title: "Fehler beim Bestätigen",
         description: error.message,
       });
     } finally {
       setIsUpdating(null);
     }
   };
-  
+
+  const handleDecline = async (id: string) => {
+      setIsUpdating(id);
+      try {
+          // Instead of patching, we now delete the event
+          const res = await fetch(`${API_URL}/${id}`, {
+              method: 'DELETE',
+          });
+          
+          const result = await res.json();
+          if (!res.ok || !result.success) {
+              throw new Error(result.message || 'Terminanfrage konnte nicht gelöscht werden.');
+          }
+
+          toast({
+              title: 'Anfrage abgelehnt',
+              description: 'Die Terminanfrage wurde erfolgreich aus dem Kalender entfernt.',
+          });
+          await fetchAppointments();
+      } catch (error: any) {
+          toast({
+              variant: 'destructive',
+              title: 'Fehler beim Ablehnen',
+              description: error.message,
+          });
+      } finally {
+          setIsUpdating(null);
+      }
+  }
+
   // Extracts customer name and email from description
   const parseDescription = (desc: string) => {
     const safeDesc = desc || "";
@@ -135,7 +159,6 @@ export default function AppointmentManager() {
         phone: phoneMatch ? phoneMatch[1].split('\n')[0].trim() : 'N/A',
     };
   }
-
 
   const formatDate = (isoString: string) => {
     if (!isoString) return "Ungültiges Datum";
@@ -184,8 +207,12 @@ export default function AppointmentManager() {
           {appointments.length > 0 ? (
             appointments.map((apt) => {
               const { name, email, phone } = parseDescription(apt.description);
-              const displayStatus = statusMap[apt.status] || statusMap.needsAction;
-              const service = (apt.summary || '').split('–')[0]?.replace('Werkstatt: ','').trim() || 'Service';
+              
+              const isRequest = apt.summary.startsWith("Anfrage:");
+              const effectiveStatus = isRequest ? 'needsAction' : apt.status;
+              const displayStatus = statusMap[effectiveStatus] || statusMap.needsAction;
+              
+              const service = (apt.summary || '').replace(/^Anfrage:\s*/, '').split('–')[0]?.replace('Werkstatt: ','').trim() || 'Service';
 
               return (
               <TableRow key={apt.id}>
@@ -208,24 +235,30 @@ export default function AppointmentManager() {
                     <Loader2 className="w-4 h-4 animate-spin ml-auto" />
                   ) : (
                     <div className="flex gap-2 justify-end">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleUpdateStatus(apt.id, "accepted")}
-                        disabled={apt.status === "accepted"}
-                        title="Bestätigen"
-                      >
-                        <Check className="w-4 h-4 text-green-500" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleUpdateStatus(apt.id, "declined")}
-                        disabled={apt.status === "declined"}
-                        title="Ablehnen"
-                      >
-                        <X className="w-4 h-4 text-destructive" />
-                      </Button>
+                      {effectiveStatus === 'needsAction' ? (
+                        <>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleConfirm(apt)}
+                            title="Bestätigen"
+                          >
+                            <Check className="w-4 h-4 text-green-500" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDecline(apt.id)}
+                            title="Ablehnen & Löschen"
+                          >
+                            <X className="w-4 h-4 text-destructive" />
+                          </Button>
+                        </>
+                      ) : (
+                        <span className="text-sm text-muted-foreground italic">
+                           {displayStatus.text}
+                        </span>
+                      )}
                     </div>
                   )}
                 </TableCell>
