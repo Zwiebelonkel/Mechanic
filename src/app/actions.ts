@@ -40,17 +40,18 @@ export async function scheduleAppointment(data: AppointmentData) {
     );
     const end = new Date(start.getTime() + 60 * 60 * 1000);
 
-    // Kundendaten in die Notizen packen, um den Google-API-Fehler zu umgehen.
+    // Pack customer data into notes to avoid the Google API error.
+    // The backend is already configured to read this.
     const notes = `Kunde: ${data.name}\nE-Mail: ${data.email}\nTelefon: ${data.phone}`;
 
     const body = {
-      name: data.name,
-      email: data.email,
+      name: data.name, // Still useful for the summary
+      email: process.env.SHOP_EMAIL, // Send a dummy or shop email
       phone: data.phone,
       service: `Anfrage: ${data.issue}`, // Mark as a request
       start_iso: start.toISOString(),
       end_iso: end.toISOString(),
-      notes: notes, // Hier werden die Kundendaten übergeben
+      notes: notes, // Pass all customer data here
     };
 
     const res = await fetch(API_URL, {
