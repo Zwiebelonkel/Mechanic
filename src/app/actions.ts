@@ -46,7 +46,9 @@ export async function scheduleAppointment(data: AppointmentData) {
 
     const body = {
       name: data.name, // Still useful for the summary
-      email: process.env.SHOP_EMAIL, // Send a dummy or shop email
+      // Send the shop email to prevent Google from trying to invite external attendees.
+      // The backend will create the event in the shop's calendar without sending invites.
+      email: process.env.SHOP_EMAIL,
       phone: data.phone,
       service: `Anfrage: ${data.issue}`, // Mark as a request
       start_iso: start.toISOString(),
