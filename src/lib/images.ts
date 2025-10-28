@@ -31,6 +31,30 @@ export const placeholderImages = [
     imageHint: "car mechanic",
   },
   {
+    id: "service-repair",
+    description: "Mechanic working on an engine.",
+    imageUrl: "https://picsum.photos/seed/repair/600/400",
+    imageHint: "engine repair"
+  },
+  {
+    id: "service-maintenance",
+    description: "Car on a lift for maintenance.",
+    imageUrl: "https://picsum.photos/seed/maintenance/600/400",
+    imageHint: "car maintenance"
+  },
+  {
+    id: "service-inspection",
+    description: "Mechanic inspecting a car.",
+    imageUrl: "https://picsum.photos/seed/inspection/600/400",
+    imageHint: "car inspection"
+  },
+  {
+    id: "service-tires",
+    description: "A stack of tires.",
+    imageUrl: "https://picsum.photos/seed/tires/600/400",
+    imageHint: "car tires"
+  },
+  {
     id: "gallery-1",
     description: "Detailed engine work.",
     imageUrl: "https://picsum.photos/seed/g1/600/600",

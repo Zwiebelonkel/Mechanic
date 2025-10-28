@@ -1,4 +1,7 @@
 
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -9,27 +12,41 @@ import PromoModal from '@/components/promo-modal';
 import ServiceCard, { Service } from '@/components/service-card';
 import BriefViewerContainer from '@/components/brief-viewer-container';
 import TiltCard from '@/components/tilt-card';
+import ServiceModal from '@/components/service-modal';
 
-const services: Service[] = [
+export interface EnrichedService extends Service {
+  longDescription: string;
+  image: typeof placeholderImages[0] | undefined;
+}
+
+const services: EnrichedService[] = [
   {
     icon: 'Wrench',
     title: 'Allgemeine Reparaturen',
     description: 'Von der Motordiagnose bis zur Bremsenreparatur erledigen wir alles mit Präzision und Sorgfalt.',
+    longDescription: 'Unser Team von erfahrenen Technikern ist auf die Diagnose und Reparatur einer Vielzahl von Fahrzeugproblemen spezialisiert. Wir verwenden modernste Ausrüstung, um sicherzustellen, dass Ihr Fahrzeug nach höchsten Standards repariert wird, von komplexen Motorproblemen bis hin zu routinemäßigen Bremsenwechseln.',
+    image: placeholderImages.find(p => p.id === 'service-repair'),
   },
   {
     icon: 'CircleGauge',
     title: 'Geplante Wartung',
     description: 'Halten Sie Ihr Fahrzeug mit unseren umfassenden Wartungsdiensten in Top-Zustand.',
+    longDescription: 'Regelmäßige Wartung ist der Schlüssel zur Langlebigkeit und Zuverlässigkeit Ihres Fahrzeugs. Wir bieten umfassende Wartungspakete an, die Ölwechsel, Flüssigkeitskontrollen, Filterwechsel und vollständige Fahrzeuginspektionen umfassen, um sicherzustellen, dass Ihr Auto optimal läuft.',
+    image: placeholderImages.find(p => p.id === 'service-maintenance'),
   },
   {
     icon: 'Search',
     title: 'Inspektionen & Diagnosen',
     description: 'Modernste Ausrüstung zur Diagnose von Problemen.',
+    longDescription: 'Mit unserer fortschrittlichen Diagnoseausrüstung können wir schnell und genau Probleme mit der Elektronik, dem Motor und anderen Systemen Ihres Fahrzeugs identifizieren. Dies ermöglicht uns, präzise Reparaturen durchzuführen und unnötige Kosten zu vermeiden.',
+    image: placeholderImages.find(p => p.id === 'service-inspection'),
   },
   {
     icon: 'Disc',
     title: 'Reifenservice',
     description: 'Reifenmontage, Auswuchten und Achsvermessung für eine reibungslose und sichere Fahrt.',
+    longDescription: 'Ein guter Reifenzustand ist entscheidend für Ihre Sicherheit. Wir bieten einen kompletten Reifenservice, einschließlich Montage, Auswuchten, Reparaturen und präziser Achsvermessung, um eine optimale Fahrleistung und gleichmäßigen Reifenverschleiß zu gewährleisten.',
+    image: placeholderImages.find(p => p.id === 'service-tires'),
   },
 ];
 
@@ -65,12 +82,19 @@ const testimonials = [
 ];
 
 export default function Home() {
+  const [selectedService, setSelectedService] = useState<EnrichedService | null>(null);
   const heroImage = placeholderImages.find(p => p.id === 'hero-mechanic-2');
   const aboutImage = placeholderImages.find(p => p.id === 'about-us');
 
   return (
     <>
       <PromoModal />
+      <ServiceModal
+        service={selectedService}
+        isOpen={!!selectedService}
+        onOpenChange={(isOpen) => !isOpen && setSelectedService(null)}
+      />
+
       <section className="relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-center text-white">
         {heroImage && (
           <Image
@@ -112,7 +136,9 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {services.map((service, index) => (
               <TiltCard key={index}>
-                <ServiceCard service={service} />
+                <div onClick={() => setSelectedService(service)} className="h-full cursor-pointer">
+                  <ServiceCard service={service} />
+                </div>
               </TiltCard>
             ))}
           </div>
