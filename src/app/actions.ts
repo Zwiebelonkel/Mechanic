@@ -1,5 +1,3 @@
-
-'use server';
 import { z } from "zod";
 import { de } from "date-fns/locale";
 import { format } from "date-fns";
@@ -30,28 +28,25 @@ export type AppointmentData = z.infer<typeof appointmentSchema>;
 // This async function is correct
 export async function scheduleAppointment(data: AppointmentData) {
   const API_URL = "https://mechanicbackend-bwey.onrender.com/api/appointments";
+  // const API_URL = "http://localhost:3000/api/appointments";
 
   try {
     console.log("📤 Sende Terminanfrage an Backend:", data);
 
+    // Start- und Endzeit im ISO-Format (Termin dauert 1 Stunde)
     const start = new Date(
       `${format(data.date, "yyyy-MM-dd")}T${data.time}:00`
     );
     const end = new Date(start.getTime() + 60 * 60 * 1000);
 
-    // Pack customer details into notes to avoid the attendee invitation error
-    const customerNotes = `Kunde: ${data.name}\nE-Mail: ${data.email}\nTelefon: ${data.phone}`;
-
     const body = {
       name: data.name,
-      // Send shop email to avoid inviting the customer, which causes an error.
-      // The backend will use this, but since it's the calendar owner, no invite is sent.
-      email: "info@automeisterei-seibel.de", 
+      email: data.email,
       phone: data.phone,
       service: `Anfrage: ${data.issue}`, // Mark as a request
       start_iso: start.toISOString(),
       end_iso: end.toISOString(),
-      notes: customerNotes, // Pass all customer info in the notes field
+      notes: "",
     };
 
     const res = await fetch(API_URL, {
