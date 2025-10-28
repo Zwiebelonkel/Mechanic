@@ -5,6 +5,16 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AppointmentManager from "@/components/appointment-manager";
 import { Loader2 } from "lucide-react";
+import dynamic from 'next/dynamic';
+
+const CalendarIframe = dynamic(() => import('@/components/calendar-iframe'), {
+  ssr: false,
+  loading: () => <div className="flex justify-center items-center h-64">
+    <Loader2 className="w-8 h-8 animate-spin text-primary" />
+    <p className="ml-4 text-muted-foreground">Kalender wird geladen...</p>
+  </div>
+});
+
 
 export default function AdminDashboardPage() {
   const router = useRouter();
@@ -54,15 +64,7 @@ export default function AdminDashboardPage() {
             </p>
         </div>
         <div className="relative h-0 pb-[75%] md:pb-[50%] lg:pb-[40%] overflow-hidden rounded-lg shadow-xl border bg-background">
-             <iframe
-                src="https://calendar.google.com/calendar/embed?src=b2818272096757279101c7edfb7f75cec60d5a6cde1b5bc51a2cb1cdf41d826b%40group.calendar.google.com&ctz=Europe%2FBerlin"
-                className="absolute top-0 left-0 w-full h-full dark:invert dark:hue-rotate-180 transition-all duration-300"
-                style={{border: 0}}
-                width="800"
-                height="600"
-                frameBorder="0"
-                scrolling="no">
-            </iframe>
+            <CalendarIframe />
         </div>
       </div>
     </div>
