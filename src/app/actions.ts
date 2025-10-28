@@ -40,20 +40,14 @@ export async function scheduleAppointment(data: AppointmentData) {
     );
     const end = new Date(start.getTime() + 60 * 60 * 1000);
 
-    // Pack customer data into notes to avoid the Google API error.
-    // The backend is already configured to read this.
-    const notes = `Kunde: ${data.name}\nE-Mail: ${data.email}\nTelefon: ${data.phone}`;
-
     const body = {
-      name: data.name, // Still useful for the summary
-      // Send the shop email to prevent Google from trying to invite external attendees.
-      // The backend will create the event in the shop's calendar without sending invites.
-      email: process.env.SHOP_EMAIL,
+      name: data.name,
+      email: data.email,
       phone: data.phone,
-      service: `Anfrage: ${data.issue}`, // Mark as a request
+      service: `Werkstatt: ${data.issue}`,
       start_iso: start.toISOString(),
       end_iso: end.toISOString(),
-      notes: notes, // Pass all customer data here
+      notes: `Kundenanfrage bezüglich: ${data.issue}`,
     };
 
     const res = await fetch(API_URL, {
@@ -78,7 +72,7 @@ export async function scheduleAppointment(data: AppointmentData) {
       success: true,
       message: `✅ Terminanfrage erhalten für den ${format(data.date, "PPP", {
         locale: de,
-      })} um ${data.time}. Wir prüfen die Verfügbarkeit und senden Ihnen eine separate Bestätigung.`,
+      })} um ${data.time}. Sie erhalten in Kürze eine Bestätigung und eine Kalendereinladung.`,
     };
   } catch (error: any) {
     console.error("⚠️ Netzwerkfehler:", error);
