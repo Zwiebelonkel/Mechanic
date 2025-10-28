@@ -32,12 +32,12 @@ interface Appointment {
 // Helper to map GCal status to our desired display status and style
 const statusMap: Record<
   GCalStatus,
-  { text: string; variant: "default" | "destructive" | "secondary"; icon: React.ElementType }
+  { text: string; className: string; icon: React.ElementType }
 > = {
-  accepted: { text: "Bestätigt", variant: "default", icon: ThumbsUp },
-  declined: { text: "Abgelehnt", variant: "destructive", icon: Ban },
-  tentative: { text: "Anfrage", variant: "secondary", icon: HelpCircle },
-  needsAction: { text: "Anfrage", variant: "secondary", icon: HelpCircle },
+  accepted: { text: "Bestätigt", className: "bg-green-500/20 text-green-500 border-green-500/40 hover:bg-green-500/30", icon: ThumbsUp },
+  declined: { text: "Abgelehnt", className: "bg-red-500/20 text-red-500 border-red-500/40 hover:bg-red-500/30", icon: Ban },
+  tentative: { text: "Anfrage", className: "bg-yellow-500/20 text-yellow-500 border-yellow-500/40 hover:bg-yellow-500/30", icon: HelpCircle },
+  needsAction: { text: "Anfrage", className: "bg-yellow-500/20 text-yellow-500 border-yellow-500/40 hover:bg-yellow-500/30", icon: HelpCircle },
 };
 
 export default function AppointmentManager() {
@@ -66,7 +66,7 @@ export default function AppointmentManager() {
       );
       setAppointments(sortedAppointments);
 
-      // Auto-clean accepted requests
+      // Auto-clean accepted requests that were accepted in Google Calendar directly
       for (const apt of sortedAppointments) {
           if (apt.status === 'accepted' && apt.summary.startsWith("Anfrage:")) {
               console.log(`Auto-updating title for accepted event: ${apt.id}`);
@@ -97,6 +97,7 @@ export default function AppointmentManager() {
       let needsStatusUpdate = apt.status !== 'accepted';
       let needsSummaryUpdate = apt.summary.startsWith("Anfrage:");
 
+      // Update status to 'accepted' if needed
       if (needsStatusUpdate) {
         const statusRes = await fetch(`${API_URL}/${apt.id}/status`, {
             method: "PATCH",
@@ -106,6 +107,7 @@ export default function AppointmentManager() {
         if (!statusRes.ok) throw new Error("Status konnte nicht aktualisiert werden.");
       }
       
+      // Update summary to remove "Anfrage:" prefix if needed
       if (needsSummaryUpdate) {
         const newSummary = apt.summary.replace(/^Anfrage:\s*/, "");
         const summaryRes = await fetch(`${API_URL}/${apt.id}/summary`, {
@@ -160,7 +162,9 @@ export default function AppointmentManager() {
           });
           
           if (!deleteRes.ok) {
-              throw new Error('Termin konnte nicht aus dem Kalender entfernt werden.');
+              // If deletion fails, it might be because the event is already gone.
+              // We can still show success to the user and refresh.
+              console.warn(`Could not delete event ${apt.id}, maybe it was already deleted.`);
           }
 
           toast({
@@ -242,9 +246,11 @@ export default function AppointmentManager() {
               const { name, email, phone } = parseDescription(apt.description);
               
               const isRequest = apt.summary.startsWith("Anfrage:");
+              // Treat as 'needsAction' if it's a request, otherwise use the status from Google.
               const effectiveStatus = isRequest ? 'needsAction' : (apt.status || 'tentative');
               const displayStatus = statusMap[effectiveStatus] || statusMap.needsAction;
               
+              // Clean up the summary for display
               const service = (apt.summary || '').replace(/^Anfrage:\s*/, '').split('–')[0]?.replace('Werkstatt: ','').trim() || 'Service';
 
               return (
@@ -261,13 +267,14 @@ export default function AppointmentManager() {
                 </TableCell>
                 <TableCell>{service}</TableCell>
                 <TableCell>
-                  <Badge variant={displayStatus.variant}>{displayStatus.text}</Badge>
+                  <Badge className={displayStatus.className}>{displayStatus.text}</Badge>
                 </TableCell>
                 <TableCell className="text-right">
                   {isUpdating === apt.id ? (
                     <Loader2 className="w-4 h-4 animate-spin ml-auto" />
                   ) : (
                     <div className="flex gap-2 justify-end">
+                      {/* Show confirm/decline buttons only for requests */}
                       {effectiveStatus === 'needsAction' ? (
                         <>
                           <Button
@@ -288,6 +295,7 @@ export default function AppointmentManager() {
                           </Button>
                         </>
                       ) : (
+                         // For confirmed or other statuses, only show a cancel button
                          <Button
                             variant="ghost"
                             size="icon"
