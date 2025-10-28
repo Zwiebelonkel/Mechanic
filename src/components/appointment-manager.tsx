@@ -49,8 +49,8 @@ export default function AppointmentManager() {
     process.env.NEXT_PUBLIC_API_URL || "https://mechanicbackend-bwey.onrender.com"
   }/api/appointments`;
 
-  const fetchAppointments = useCallback(async () => {
-    setIsLoading(true);
+  const fetchAppointments = useCallback(async (isSilent = false) => {
+    if (!isSilent) setIsLoading(true);
     try {
       const res = await fetch(API_URL);
       if (!res.ok) throw new Error("Fehler beim Laden der Termine.");
@@ -65,76 +65,109 @@ export default function AppointmentManager() {
           new Date(a.start_iso).getTime() - new Date(b.start_iso).getTime()
       );
       setAppointments(sortedAppointments);
+
+      // Auto-clean accepted requests
+      for (const apt of sortedAppointments) {
+          if (apt.status === 'accepted' && apt.summary.startsWith("Anfrage:")) {
+              console.log(`Auto-updating title for accepted event: ${apt.id}`);
+              handleConfirm(apt, true); // Silently confirm to clean up title
+          }
+      }
+
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Fehler",
         description: error.message || "Termine konnten nicht geladen werden.",
       });
-      setAppointments([]); // Bei Fehler leeres Array setzen
+      setAppointments([]);
     } finally {
-      setIsLoading(false);
+      if (!isSilent) setIsLoading(false);
     }
   }, [toast, API_URL]);
+
 
   useEffect(() => {
     fetchAppointments();
   }, [fetchAppointments]);
 
-  const handleConfirm = async (apt: Appointment) => {
+  const handleConfirm = async (apt: Appointment, isSilent = false) => {
     setIsUpdating(apt.id);
     try {
-      // 1. Update status to 'accepted'
-      const statusRes = await fetch(`${API_URL}/${apt.id}/status`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "accepted" }),
-      });
-      if (!statusRes.ok) throw new Error("Status konnte nicht aktualisiert werden.");
+      let needsStatusUpdate = apt.status !== 'accepted';
+      let needsSummaryUpdate = apt.summary.startsWith("Anfrage:");
 
-      // 2. Update summary to remove "Anfrage:"
-      const newSummary = apt.summary.replace(/^Anfrage:\s*/, "");
-      const summaryRes = await fetch(`${API_URL}/${apt.id}/summary`, {
-          method: 'PATCH',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({ summary: newSummary }),
-      });
-      if (!summaryRes.ok) throw new Error("Titel konnte nicht aktualisiert werden.");
+      if (needsStatusUpdate) {
+        const statusRes = await fetch(`${API_URL}/${apt.id}/status`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: "accepted" }),
+        });
+        if (!statusRes.ok) throw new Error("Status konnte nicht aktualisiert werden.");
+      }
+      
+      if (needsSummaryUpdate) {
+        const newSummary = apt.summary.replace(/^Anfrage:\s*/, "");
+        const summaryRes = await fetch(`${API_URL}/${apt.id}/summary`, {
+            method: 'PATCH',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ summary: newSummary }),
+        });
+        if (!summaryRes.ok) throw new Error("Titel konnte nicht aktualisiert werden.");
+      }
 
-      toast({
-        title: "Erfolg!",
-        description: `Der Termin wurde erfolgreich bestätigt.`,
-      });
-      await fetchAppointments();
+      if (!isSilent) {
+        toast({
+            title: "Erfolg!",
+            description: `Der Termin wurde erfolgreich bestätigt.`,
+        });
+      }
+      await fetchAppointments(true); // Silent refresh
     } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Fehler beim Bestätigen",
-        description: error.message,
-      });
+      if (!isSilent) {
+        toast({
+            variant: "destructive",
+            title: "Fehler beim Bestätigen",
+            description: error.message,
+        });
+      } else {
+        console.error("Silent update failed:", error.message);
+      }
     } finally {
       setIsUpdating(null);
     }
   };
 
-  const handleDecline = async (id: string) => {
-      setIsUpdating(id);
+  const handleDecline = async (apt: Appointment) => {
+      setIsUpdating(apt.id);
       try {
-          // Instead of patching, we now delete the event
-          const res = await fetch(`${API_URL}/${id}`, {
+          // If status is already "declined", just delete.
+          // Otherwise, update status first, then delete.
+          if (apt.status !== 'declined') {
+               const statusRes = await fetch(`${API_URL}/${apt.id}/status`, {
+                  method: 'PATCH',
+                  headers: {'Content-Type': 'application/json'},
+                  body: JSON.stringify({ status: 'declined' }),
+              });
+              if (!statusRes.ok) throw new Error('Status konnte nicht auf "abgelehnt" gesetzt werden.');
+          }
+
+          // Optional: A small delay to allow Google to process the status update before deleting.
+          await new Promise(resolve => setTimeout(resolve, 500));
+
+          const deleteRes = await fetch(`${API_URL}/${apt.id}`, {
               method: 'DELETE',
           });
           
-          const result = await res.json();
-          if (!res.ok || !result.success) {
-              throw new Error(result.message || 'Terminanfrage konnte nicht gelöscht werden.');
+          if (!deleteRes.ok) {
+              throw new Error('Termin konnte nicht aus dem Kalender entfernt werden.');
           }
 
           toast({
               title: 'Anfrage abgelehnt',
-              description: 'Die Terminanfrage wurde erfolgreich aus dem Kalender entfernt.',
+              description: 'Die Terminanfrage wurde erfolgreich entfernt.',
           });
-          await fetchAppointments();
+          await fetchAppointments(true); // Silent refresh
       } catch (error: any) {
           toast({
               variant: 'destructive',
@@ -184,7 +217,7 @@ export default function AppointmentManager() {
         <Button
           variant="outline"
           size="sm"
-          onClick={fetchAppointments}
+          onClick={() => fetchAppointments()}
           disabled={isLoading}
         >
           <RefreshCw
@@ -209,7 +242,7 @@ export default function AppointmentManager() {
               const { name, email, phone } = parseDescription(apt.description);
               
               const isRequest = apt.summary.startsWith("Anfrage:");
-              const effectiveStatus = isRequest ? 'needsAction' : apt.status;
+              const effectiveStatus = isRequest ? 'needsAction' : (apt.status || 'tentative');
               const displayStatus = statusMap[effectiveStatus] || statusMap.needsAction;
               
               const service = (apt.summary || '').replace(/^Anfrage:\s*/, '').split('–')[0]?.replace('Werkstatt: ','').trim() || 'Service';
@@ -248,16 +281,21 @@ export default function AppointmentManager() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => handleDecline(apt.id)}
+                            onClick={() => handleDecline(apt)}
                             title="Ablehnen & Löschen"
                           >
                             <X className="w-4 h-4 text-destructive" />
                           </Button>
                         </>
                       ) : (
-                        <span className="text-sm text-muted-foreground italic">
-                           {displayStatus.text}
-                        </span>
+                         <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDecline(apt)}
+                            title="Termin Stornieren & Löschen"
+                          >
+                            <X className="w-4 h-4 text-destructive" />
+                          </Button>
                       )}
                     </div>
                   )}
@@ -266,7 +304,7 @@ export default function AppointmentManager() {
             )})
           ) : (
             <TableRow>
-              <TableCell colSpan={6} className="h-24 text-center">
+              <TableCell colSpan={5} className="h-24 text-center">
                 Keine Termine gefunden.
               </TableCell>
             </TableRow>
@@ -276,3 +314,5 @@ export default function AppointmentManager() {
     </div>
   );
 }
+
+    
