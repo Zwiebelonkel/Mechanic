@@ -15,13 +15,13 @@ export const placeholderImages = [
   {
     id: "customer-1",
     description: "Portrait of a happy male customer.",
-    imageUrl: "/images/customer-1.jpg",
+    imageUrl: "https://picsum.photos/seed/customer1/100/100",
     imageHint: "happy man",
   },
   {
     id: "customer-2",
     description: "Portrait of a satisfied female customer.",
-    imageUrl: "/images/customer-2.jpg",
+    imageUrl: "https://picsum.photos/seed/customer2/100/100",
     imageHint: "happy woman",
   },
   {
