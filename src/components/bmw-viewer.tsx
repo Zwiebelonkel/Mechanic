@@ -8,6 +8,7 @@ const BmwViewer = () => {
   return (
     <model-viewer
       src="/models/bmw_m5.glb"
+      poster="/images/car.jpg"
       alt="A 3D model of a BMW M5"
       ar
       ar-modes="webxr scene-viewer quick-look"

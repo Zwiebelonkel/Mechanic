@@ -8,6 +8,7 @@ const BriefViewer = () => {
   return (
 <model-viewer
   src="/models/brief.glb"
+  poster="/images/garage.jpg"
   alt="A 3D model of a letter"
   auto-rotate
   camera-controls
