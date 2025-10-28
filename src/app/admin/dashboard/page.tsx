@@ -38,7 +38,7 @@ export default function AdminDashboardPage() {
         <div className="relative h-0 pb-[75%] md:pb-[50%] lg:pb-[40%] overflow-hidden rounded-lg shadow-xl border bg-background">
              <iframe 
                 src="https://calendar.google.com/calendar/embed?src=b2818272096757279101c7edfb7f75cec60d5a6cde1b5bc51a2cb1cdf41d826b%40group.calendar.google.com&ctz=Europe%2FBerlin" 
-                className="absolute top-0 left-0 w-full h-full"
+                className="absolute top-0 left-0 w-full h-full dark:invert dark:hue-rotate-180 transition-all duration-300"
                 style={{border: 0}}
                 width="800" 
                 height="600" 
